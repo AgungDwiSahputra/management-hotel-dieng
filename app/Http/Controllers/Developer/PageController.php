@@ -9,6 +9,9 @@
   {
       public function index(Request $request)
       {
-          return "INI HALAMAN UTAMA DEVELOPER";
+          return view('developer.index', [
+              'title' => 'Dashboard Developer',
+              'description' => 'Halaman utama untuk developer',
+          ]);
       }
   }
