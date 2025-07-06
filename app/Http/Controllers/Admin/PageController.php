@@ -9,6 +9,9 @@
   {
       public function index()
       {
-          return "INI HALAMAN UTAMA ADMIN";
+          return view('admin.index', [
+              'title' => 'Dashboard Admin',
+              'description' => 'Halaman utama untuk admin',
+          ]);
       }
   }
