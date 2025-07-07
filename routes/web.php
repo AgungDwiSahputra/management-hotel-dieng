@@ -1,16 +1,16 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 include __DIR__ . '/developer.php';
-include __DIR__ . '/admin.php';
 
 Route::get('/', function () {
     if(auth()->check()) {
         $user = auth()->user();
         if ($user->hasRole('admin')) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('dashboard');
         } elseif ($user->hasRole('developer')) {
             return redirect()->route('developer.dashboard');
         }
@@ -31,3 +31,7 @@ Route::get('/', function () {
 */
 Auth::routes();
 // ================================================
+
+Route::middleware(['auth', 'role:admin|developer'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});

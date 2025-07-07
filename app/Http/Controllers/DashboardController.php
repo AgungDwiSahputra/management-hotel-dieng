@@ -1,15 +1,15 @@
 <?php
 
-  namespace App\Http\Controllers\Admin;
+  namespace App\Http\Controllers;
 
   use App\Http\Controllers\Controller;
   use Illuminate\Http\Request;
 
-  class PageController extends Controller
+  class DashboardController extends Controller
   {
       public function index()
       {
-          return view('admin.index', [
+          return view('index', [
               'title' => 'Dashboard Admin',
               'description' => 'Halaman utama untuk admin',
           ]);
