@@ -26,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/dashboard';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -46,6 +46,5 @@ class LoginController extends Controller
         } elseif ($user->hasRole('developer')) {
             return redirect()->route('developer.dashboard');
         }
-        return redirect()->route('home');
     }
 }

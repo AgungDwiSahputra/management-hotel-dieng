@@ -7,6 +7,14 @@ include __DIR__ . '/developer.php';
 include __DIR__ . '/admin.php';
 
 Route::get('/', function () {
+    if(auth()->check()) {
+        $user = auth()->user();
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('developer')) {
+            return redirect()->route('developer.dashboard');
+        }
+    }
     return redirect()->route('login');
 });
 
@@ -23,5 +31,3 @@ Route::get('/', function () {
 */
 Auth::routes();
 // ================================================
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
