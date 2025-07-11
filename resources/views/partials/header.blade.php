@@ -73,7 +73,7 @@
                 </button>
                 <!-- Dark Mode Toggler -->
 
-                <!-- Notification Menu Area -->
+                {{-- <!-- Notification Menu Area -->
                 <div class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
                     <button
                         class="hover:text-dark-900 relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
@@ -351,7 +351,7 @@
                     </div>
                     <!-- Dropdown End -->
                 </div>
-                <!-- Notification Menu Area -->
+                <!-- Notification Menu Area --> --}}
             </div>
 
             <!-- User Area -->
@@ -359,10 +359,10 @@
                 <a class="flex items-center text-gray-700 dark:text-gray-400" href="#"
                     @click.prevent="dropdownOpen = ! dropdownOpen">
                     <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
-                        <img src="./images/user/owner.jpg" alt="User" />
+                        <img src="{{ asset('assets/admin-panel/images/user/owner.jpg') }}" alt="User" />
                     </span>
 
-                    <span class="text-theme-sm mr-1 block font-medium"> Musharof </span>
+                    <span class="text-theme-sm mr-1 block font-medium"> {{ Auth::user()->name }} </span>
 
                     <svg :class="dropdownOpen && 'rotate-180'" class="stroke-gray-500 dark:stroke-gray-400"
                         width="18" height="20" viewBox="0 0 18 20" fill="none"
@@ -377,14 +377,14 @@
                     class="shadow-theme-lg dark:bg-gray-dark absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800">
                     <div>
                         <span class="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-                            Musharof Chowdhury
+                            {{ Auth::user()->name }}
                         </span>
                         <span class="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-                            randomuser@pimjo.com
+                            {{ Auth::user()->email }}
                         </span>
                     </div>
 
-                    <ul class="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">
+                    {{-- <ul class="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">
                         <li>
                             <a href="messages.html"
                                 class="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
@@ -398,7 +398,7 @@
                                 Account settings
                             </a>
                         </li>
-                    </ul>
+                    </ul> --}}
                     <button onclick="document.getElementById('logout-form').submit()"
                         class="group text-theme-sm mt-3 flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
                         <svg class="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300"

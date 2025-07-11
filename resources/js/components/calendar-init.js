@@ -30,9 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const getModalUpdateBtnEl = document.querySelector(".btn-update-event");
     const calendarsEvents = {
       Danger: "danger",
-      Success: "success",
-      Primary: "primary",
-      Warning: "warning",
+      // Success: "success",
+      // Primary: "primary",
+      // Warning: "warning",
     };
 
     /*=====================*/
@@ -41,77 +41,78 @@ document.addEventListener("DOMContentLoaded", function () {
     const calendarEl = document.querySelector("#calendar");
 
     const calendarHeaderToolbar = {
-      left: "prev,next addEventButton",
+      left: "addEventButton",
       center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay",
+      right: "prev,next today",
     };
 
+    // Calendar Events
     const calendarEventsList = [
-      {
-        id: 1,
-        title: "Event Conf.",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-01`,
-        extendedProps: { calendar: "Danger" },
-      },
-      {
-        id: 2,
-        title: "Seminar #4",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-07`,
-        end: `${newDate.getFullYear()}-${getDynamicMonth()}-10`,
-        extendedProps: { calendar: "Success" },
-      },
-      {
-        groupId: "999",
-        id: 3,
-        title: "Meeting #5",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-09T16:00:00`,
-        extendedProps: { calendar: "Primary" },
-      },
-      {
-        groupId: "999",
-        id: 4,
-        title: "Submission #1",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-16T16:00:00`,
-        extendedProps: { calendar: "Warning" },
-      },
-      {
-        id: 5,
-        title: "Seminar #6",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-11`,
-        end: `${newDate.getFullYear()}-${getDynamicMonth()}-13`,
-        extendedProps: { calendar: "Danger" },
-      },
-      {
-        id: 6,
-        title: "Meeting 3",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T10:30:00`,
-        end: `${newDate.getFullYear()}-${getDynamicMonth()}-12T12:30:00`,
-        extendedProps: { calendar: "Success" },
-      },
-      {
-        id: 7,
-        title: "Meetup #",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T12:00:00`,
-        extendedProps: { calendar: "Primary" },
-      },
-      {
-        id: 8,
-        title: "Submission",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T14:30:00`,
-        extendedProps: { calendar: "Warning" },
-      },
-      {
-        id: 9,
-        title: "Attend event",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-13T07:00:00`,
-        extendedProps: { calendar: "Success" },
-      },
-      {
-        id: 10,
-        title: "Project submission #2",
-        start: `${newDate.getFullYear()}-${getDynamicMonth()}-28`,
-        extendedProps: { calendar: "Primary" },
-      },
+      // {
+      //   id: 1,
+      //   title: "Event Conf.",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-01`,
+      //   extendedProps: { calendar: "Danger" },
+      // },
+      // {
+      //   id: 2,
+      //   title: "Seminar #4",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-07`,
+      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-10`,
+      //   extendedProps: { calendar: "Success" },
+      // },
+      // {
+      //   groupId: "999",
+      //   id: 3,
+      //   title: "Meeting #5",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-09T16:00:00`,
+      //   extendedProps: { calendar: "Primary" },
+      // },
+      // {
+      //   groupId: "999",
+      //   id: 4,
+      //   title: "Submission #1",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-16T16:00:00`,
+      //   extendedProps: { calendar: "Warning" },
+      // },
+      // {
+      //   id: 5,
+      //   title: "Seminar #6",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-11`,
+      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-13`,
+      //   extendedProps: { calendar: "Danger" },
+      // },
+      // {
+      //   id: 6,
+      //   title: "Meeting 3",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T10:30:00`,
+      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-12T12:30:00`,
+      //   extendedProps: { calendar: "Success" },
+      // },
+      // {
+      //   id: 7,
+      //   title: "Meetup #",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T12:00:00`,
+      //   extendedProps: { calendar: "Primary" },
+      // },
+      // {
+      //   id: 8,
+      //   title: "Submission",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T14:30:00`,
+      //   extendedProps: { calendar: "Primary" },
+      // },
+      // {
+      //   id: 9,
+      //   title: "Attend event",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-13T07:00:00`,
+      //   extendedProps: { calendar: "Success" },
+      // },
+      // {
+      //   id: 10,
+      //   title: "Project submission #2",
+      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-28`,
+      //   extendedProps: { calendar: "Primary" },
+      // },
     ];
 
     /*=====================*/
@@ -210,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dateClick: calendarAddEvent,
       customButtons: {
         addEventButton: {
-          text: "Add Event +",
+          text: "Tambah Ketersediaan +",
           click: calendarAddEvent,
         },
       },

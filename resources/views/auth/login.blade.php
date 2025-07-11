@@ -135,7 +135,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             <img class="h-20" src="{{ asset('assets/images/logo.png') }}" alt="Logo" />
                         </a>
                         <p class="text-center text-gray-400 dark:text-white/60">
-                            Sun Flower Hotel & Villa, penginapan yang menawarkan kenyamanan dan kemewahan di tengah
+                            Villa Hotel Dieng, penginapan yang menawarkan kenyamanan dan kemewahan di tengah
                             suasana tropis Bali.
                         </p>
                     </div>

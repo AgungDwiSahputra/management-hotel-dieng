@@ -5,7 +5,7 @@
  */
 
 import './bootstrap';
-import { createApp } from 'vue';
+// import { createApp } from 'vue';
 
 import "jsvectormap/dist/jsvectormap.min.css";
 import "flatpickr/dist/flatpickr.min.css";
@@ -97,34 +97,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const searchInput = document.getElementById("search-input");
-  const searchButton = document.getElementById("search-button");
+// document.addEventListener("DOMContentLoaded", function () {
+//   const searchInput = document.getElementById("search-input");
+//   const searchButton = document.getElementById("search-button");
 
-  // Function to focus the search input
-  function focusSearchInput() {
-    searchInput.focus();
-  }
+//   // Function to focus the search input
+//   function focusSearchInput() {
+//     searchInput.focus();
+//   }
 
-  // Add click event listener to the search button
-  searchButton.addEventListener("click", focusSearchInput);
+//   // Add click event listener to the search button
+//   searchButton.addEventListener("click", focusSearchInput);
 
-  // Add keyboard event listener for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
-  document.addEventListener("keydown", function (event) {
-    if ((event.metaKey || event.ctrlKey) && event.key === "k") {
-      event.preventDefault(); // Prevent the default browser behavior
-      focusSearchInput();
-    }
-  });
+//   // Add keyboard event listener for Cmd+K (Mac) or Ctrl+K (Windows/Linux)
+//   document.addEventListener("keydown", function (event) {
+//     if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+//       event.preventDefault(); // Prevent the default browser behavior
+//       focusSearchInput();
+//     }
+//   });
 
-  // Add keyboard event listener for "/" key
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "/" && document.activeElement !== searchInput) {
-      event.preventDefault(); // Prevent the "/" character from being typed
-      focusSearchInput();
-    }
-  });
-});
+//   // Add keyboard event listener for "/" key
+//   document.addEventListener("keydown", function (event) {
+//     if (event.key === "/" && document.activeElement !== searchInput) {
+//       event.preventDefault(); // Prevent the "/" character from being typed
+//       focusSearchInput();
+//     }
+//   });
+// });
 
 
 /**
@@ -133,27 +133,27 @@ document.addEventListener("DOMContentLoaded", function () {
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+// const app = createApp({});
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+// import ExampleComponent from './components/ExampleComponent.vue';
+// app.component('example-component', ExampleComponent);
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+// /**
+//  * The following block of code may be used to automatically register your
+//  * Vue components. It will recursively scan this directory for the Vue
+//  * components and automatically register them with their "basename".
+//  *
+//  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+//  */
 
-// Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-//     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-// });
+// // Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
+// //     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
+// // });
 
-/**
- * Finally, we will attach the application instance to a HTML element with
- * an "id" attribute of "app". This element is included with the "auth"
- * scaffolding. Otherwise, you will need to add an element yourself.
- */
+// /**
+//  * Finally, we will attach the application instance to a HTML element with
+//  * an "id" attribute of "app". This element is included with the "auth"
+//  * scaffolding. Otherwise, you will need to add an element yourself.
+//  */
 
-app.mount('#app');
+// app.mount('#app');

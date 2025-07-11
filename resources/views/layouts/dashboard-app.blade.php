@@ -12,6 +12,9 @@
 
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
 <body x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
@@ -45,7 +48,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
 
                 @yield('content')
-            
+
 
             </main>
             <!-- ===== Main Content End ===== -->
@@ -53,6 +56,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>
