@@ -11,9 +11,11 @@
 
                 <!-- ====== Table One Start -->
                 {{-- <include src="./partials/table/table-01.html" /> --}}
-                @include('partials.table.table-06')
+                <x-tables.table-reservation :rows="$reservations"/>
                 <!-- ====== Table One End -->
             </div>
         </div>
     </div>
+
+    <x-js.flowbite-datatable />
 @endsection

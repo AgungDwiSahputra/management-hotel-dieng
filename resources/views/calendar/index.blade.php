@@ -3,9 +3,10 @@
 @section('content')
     <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
         <!-- Breadcrumb Start -->
-        <div x-data="{ pageName: `Ketersediaan` }">
-            @include('partials.breadcrumb')
-        </div>
+        <x-breadcrumb.type-1 :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('dashboard')],
+            ['label' => 'Ketersediaan', 'url' => null]
+        ]" />
         <!-- Breadcrumb End -->
 
         <div class="space-y-5 sm:space-y-6">

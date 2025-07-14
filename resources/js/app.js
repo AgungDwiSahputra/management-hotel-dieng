@@ -16,6 +16,7 @@ import Alpine from "alpinejs";
 import persist from "@alpinejs/persist";
 import flatpickr from "flatpickr";
 import Dropzone from "dropzone";
+import Swal from 'sweetalert2';
 
 import chart01 from "./components/charts/chart-01";
 import chart02 from "./components/charts/chart-02";
@@ -27,6 +28,57 @@ import "./components/image-resize";
 Alpine.plugin(persist);
 window.Alpine = Alpine;
 Alpine.start();
+
+// Make the function accessible globally
+window.showConfirmationSwal = function(title, pesan, icon, onConfirm) {
+  Swal.fire({
+    title: title || 'Are you sure?',
+    text: pesan || "You won't be able to revert this!",
+    icon: icon || 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, Lanjutkan!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
+    }
+  });
+};
+window.showSuccessSwal = function(title, pesan) {
+  Swal.fire({
+    title: title || 'Success!',
+    text: pesan,
+    icon: 'success',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'Ok!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      location.reload();
+    }
+  });
+};
+
+window.showErrorSwal = function(title, pesan) {
+  Swal.fire({
+    title: title || 'Error!',
+    text: pesan,
+    icon: 'error',
+    confirmButtonColor: '#d33',
+    confirmButtonText: 'Ok!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      location.reload();
+    }
+  });
+};
+
+// Example usage in Blade (inside a <script> tag):
+// <button onclick="showConfirmationSwal('Delete Item', 'Do you really want to delete this item?', 'warning', function() { /* your delete logic here */ })">Delete</button>
+// Example usage to ensure the function is used:
+// showConfirmationSwal('Delete Item', 'Do you really want to delete this item?', 'warning');
 
 // Init flatpickr
 flatpickr(".datepicker", {

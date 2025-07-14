@@ -3,9 +3,10 @@
 @section('content')
     <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
         <!-- Breadcrumb Start -->
-        <div x-data="{ pageName: `Pemesanan` }">
-            @include('partials.breadcrumb')
-        </div>
+        <x-breadcrumb.type-1 :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('dashboard')],
+            ['label' => 'Reservation', 'url' => null]
+        ]" />
         <!-- Breadcrumb End -->
 
         <div class="space-y-5 sm:space-y-6">
@@ -17,7 +18,7 @@
                 </div>
                 <div class="border-t border-gray-100 dark:border-gray-800">
                     <!-- ====== Table Six Start -->
-                    <x-tables.table-with-action />
+                    <x-tables.table-reservation :rows="$reservations"/>
                     <!-- ====== Table Six End -->
                 </div>
             </div>
