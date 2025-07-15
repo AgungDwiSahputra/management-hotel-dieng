@@ -11,7 +11,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = FetchAPI('https://website-hotel-dieng.test/api/v1/reservations');
+        $reservations = FetchAPI(env('URL_API') . '/api/v1/reservations');
 
         return view('reservation.index', [
             'title' => 'Reservation',
@@ -41,7 +41,7 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        $reservation_details = FetchAPI("https://website-hotel-dieng.test/api/v1/reservations/" . $id);
+        $reservation_details = FetchAPI(env('URL_API') . "/api/v1/reservations/" . $id);
 
         return view('reservation.show', [
             'title' => 'Reservation Details',
