@@ -25,7 +25,7 @@
             </div>
             <div class="mt-8 modal-body">
                 <div>
-                    <div>
+                    <div class="hidden">
                         <div>
                             <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                 Judul Acara
@@ -34,7 +34,7 @@
                                 class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
                         </div>
                     </div>
-                    <div class="mt-6">
+                    <div>
                         <div>
                             <label class="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
                                 Jenis
@@ -59,60 +59,6 @@
                                     </label>
                                 </div>
                             </div>
-                            {{-- <div class="n-chk">
-                                <div class="form-check form-check-warning form-check-inline">
-                                    <label
-                                        class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400"
-                                        for="modalSuccess">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level"
-                                                value="Success" id="modalSuccess" />
-                                            <span
-                                                class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                                <span class="w-2 h-2 bg-white rounded-full dark:bg-transparent">
-                                                </span>
-                                            </span>
-                                        </span>
-                                        Sukses
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="n-chk">
-                                <div class="form-check form-check-success form-check-inline">
-                                    <label
-                                        class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400"
-                                        for="modalPrimary">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level"
-                                                value="Primary" id="modalPrimary" />
-                                            <span
-                                                class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                                <span class="w-2 h-2 bg-white rounded-full dark:bg-transparent">
-                                                </span>
-                                            </span>
-                                        </span>
-                                        Utama
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="n-chk">
-                                <div class="form-check form-check-danger form-check-inline">
-                                    <label
-                                        class="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400"
-                                        for="modalWarning">
-                                        <span class="relative">
-                                            <input class="sr-only form-check-input" type="radio" name="event-level"
-                                                value="Warning" id="modalWarning" />
-                                            <span
-                                                class="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
-                                                <span class="w-2 h-2 bg-white rounded-full dark:bg-transparent">
-                                                </span>
-                                            </span>
-                                        </span>
-                                        Peringatan
-                                    </label>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
 
@@ -166,13 +112,18 @@
                     Tutup
                 </button>
                 <button type="button"
+                    class="btn btn-danger btn-delete-event flex w-full justify-center rounded-lg bg-red-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-600 sm:w-auto"
+                    data-fc-event-public-id="">
+                    Hapus
+                </button>
+                <button type="button"
                     class="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                     data-fc-event-public-id="">
-                    Perbarui perubahan
+                    Perbarui
                 </button>
                 <button type="button"
                     class="btn btn-primary btn-add-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto">
-                    Tambah Acara
+                    Tambah
                 </button>
             </div>
         </div>

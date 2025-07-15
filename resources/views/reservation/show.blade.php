@@ -8,13 +8,6 @@
             ['label' => 'Reservation', 'url' => route('reservation.index')],
             ['label' => 'Detail Reservation', 'url' => null],
         ]" />
-        {{-- @include('partials.breadcrumb', [
-            'breadcrumbs' => [
-                ['label' => 'Beranda', 'url' => route('dashboard')],
-                ['label' => 'Reservation', 'url' => route('reservation.index')],
-                ['label' => 'Detail Reservation', 'url' => null],
-            ],
-        ]) --}}
         <!-- Breadcrumb End -->
 
         <div class="space-y-5 sm:space-y-6">

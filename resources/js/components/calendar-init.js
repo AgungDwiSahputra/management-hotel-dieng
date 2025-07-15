@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const getModalEndDateEl = document.querySelector("#event-end-date");
     const getModalAddBtnEl = document.querySelector(".btn-add-event");
     const getModalUpdateBtnEl = document.querySelector(".btn-update-event");
+    const getModalDeleteBtnEl = document.querySelector(".btn-delete-event");
     const calendarsEvents = {
       Danger: "danger",
       // Success: "success",
@@ -46,74 +47,32 @@ document.addEventListener("DOMContentLoaded", function () {
       right: "prev,next today",
     };
 
+    
+    /*=====================*/
+    // Calendar Functions
+    /*=====================*/
+    
+    const API_KEY = document.querySelector("#calendar").getAttribute("data-api-key");
+    let fetchEvents = null;
+    let produk_id = document.querySelector("#calendar").getAttribute("data-product-id");
+    getEventByProdukId(produk_id);
+
     // Calendar Events
-    const calendarEventsList = [
-      // {
-      //   id: 1,
-      //   title: "Event Conf.",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-01`,
-      //   extendedProps: { calendar: "Danger" },
-      // },
-      // {
-      //   id: 2,
-      //   title: "Seminar #4",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-07`,
-      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-10`,
-      //   extendedProps: { calendar: "Success" },
-      // },
-      // {
-      //   groupId: "999",
-      //   id: 3,
-      //   title: "Meeting #5",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-09T16:00:00`,
-      //   extendedProps: { calendar: "Primary" },
-      // },
-      // {
-      //   groupId: "999",
-      //   id: 4,
-      //   title: "Submission #1",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-16T16:00:00`,
-      //   extendedProps: { calendar: "Warning" },
-      // },
-      // {
-      //   id: 5,
-      //   title: "Seminar #6",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-11`,
-      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-13`,
-      //   extendedProps: { calendar: "Danger" },
-      // },
-      // {
-      //   id: 6,
-      //   title: "Meeting 3",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T10:30:00`,
-      //   end: `${newDate.getFullYear()}-${getDynamicMonth()}-12T12:30:00`,
-      //   extendedProps: { calendar: "Success" },
-      // },
-      // {
-      //   id: 7,
-      //   title: "Meetup #",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T12:00:00`,
-      //   extendedProps: { calendar: "Primary" },
-      // },
-      // {
-      //   id: 8,
-      //   title: "Submission",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-12T14:30:00`,
-      //   extendedProps: { calendar: "Primary" },
-      // },
-      // {
-      //   id: 9,
-      //   title: "Attend event",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-13T07:00:00`,
-      //   extendedProps: { calendar: "Success" },
-      // },
-      // {
-      //   id: 10,
-      //   title: "Project submission #2",
-      //   start: `${newDate.getFullYear()}-${getDynamicMonth()}-28`,
-      //   extendedProps: { calendar: "Primary" },
-      // },
-    ];
+    let calendarEventsList = [];
+    function updateCalendarEventsList() {
+      if (Array.isArray(fetchEvents)) {
+      calendarEventsList = fetchEvents.map(event => ({
+        id: event.id,
+        title: event.is_available === 0 ? "❌ Tidak Tersedia" : "✔️ Tersedia",
+        start: event.date,
+        extendedProps: {
+          calendar: event.is_available === 0 ? "Danger" : "Success",
+          produk_id: event.produk_id,
+          is_available: event.is_available,
+        },
+      }));
+      }
+    }
 
     /*=====================*/
     // Modal Functions
@@ -143,10 +102,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       getModalAddBtnEl.style.display = "flex";
       getModalUpdateBtnEl.style.display = "none";
+      getModalDeleteBtnEl.style.display = "none";
       openModal();
       getModalStartDateEl.value = info.startStr;
       getModalEndDateEl.value = info.endStr || info.startStr;
-      getModalTitleEl.value = "";
+      getModalTitleEl.value = "";      
     };
 
     /*=====================*/
@@ -161,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       getModalAddBtnEl.style.display = "flex";
       getModalUpdateBtnEl.style.display = "none";
+      getModalDeleteBtnEl.style.display = "none";
       openModal();
       getModalStartDateEl.value = combineDate;
     };
@@ -190,9 +151,12 @@ document.addEventListener("DOMContentLoaded", function () {
           getModalCheckedRadioBtnEl.checked = true;
         }
         getModalUpdateBtnEl.dataset.fcEventPublicId = getModalEventId;
+        getModalDeleteBtnEl.dataset.fcEventPublicId = getModalEventId;
         getModalAddBtnEl.style.display = "none";
         getModalUpdateBtnEl.style.display = "block";
+        getModalDeleteBtnEl.style.display = "block";
         openModal();
+
       }
     };
 
@@ -221,6 +185,29 @@ document.addEventListener("DOMContentLoaded", function () {
         return [`event-fc-color`, `fc-bg-${getColorValue}`];
       },
     });
+    
+    /*=====================*/
+    // Delete Calender Event
+    /*=====================*/
+    getModalDeleteBtnEl.addEventListener("click", () => {
+      const getPublicID = getModalDeleteBtnEl.dataset.fcEventPublicId;
+
+      // Ambil event berdasarkan publicId
+      const getEvent = calendar.getEventById(getPublicID);
+      
+      if (getEvent) {
+        // Hapus event dari kalender lokal
+        getEvent.remove();
+
+        // Panggil fungsi untuk menghapus event dari server
+        deleteEventFromServer(getPublicID, produk_id);
+
+        closeModal();
+      } else {
+        console.warn("Event not found with ID:", getPublicID);
+        closeModal();
+      }
+    });
 
     /*=====================*/
     // Update Calender Event
@@ -240,9 +227,32 @@ document.addEventListener("DOMContentLoaded", function () {
           ? getModalUpdatedCheckedRadioBtnEl.value
           : "";
 
-      getEvent.setProp("title", getTitleUpdatedValue);
+      // Buat objek data untuk dikirim ke API dalam format array 'dates'
+      const eventData = {
+        dates: []
+      };
+
+      const startDate = new Date(setModalStartDateValue);
+      const endDate = new Date(setModalEndDateValue);
+
+      while (startDate <= endDate) {
+        eventData.dates.push({
+          id_calendar: Date.now(), // Assuming you want a unique ID
+          date: startDate.toISOString().split("T")[0],
+          is_available: getModalUpdatedCheckedRadioBtnValue === "Danger" ? 0 : 1
+        });
+
+        startDate.setDate(startDate.getDate() + 1);
+      }
+
+      // Panggil fungsi untuk memperbarui event di server
+      updateEventOnServer(getPublicID, produk_id, eventData);
+
+      // Perbarui event lokal (opsional, setelah konfirmasi dari server)
+      getEvent.setProp("title", getTitleUpdatedValue); // Catatan: title mungkin tidak relevan di server
       getEvent.setDates(setModalStartDateValue, setModalEndDateValue);
       getEvent.setExtendedProp("calendar", getModalUpdatedCheckedRadioBtnValue);
+
       closeModal();
     });
 
@@ -261,14 +271,38 @@ document.addEventListener("DOMContentLoaded", function () {
         ? getModalCheckedRadioBtnEl.value
         : "";
 
+      let DateNow = Date.now();
+
       calendar.addEvent({
-        id: Date.now(), // Use unique ID based on timestamp
+        id: DateNow, // Use unique ID based on timestamp
         title: getTitleValue,
         start: setModalStartDateValue,
         end: setModalEndDateValue,
         allDay: true,
         extendedProps: { calendar: getModalCheckedRadioBtnValue },
       });
+      
+      // Buat objek data untuk dikirim ke API dalam format array 'dates'
+      const eventData = {
+        dates: []
+      };
+
+      const startDate = new Date(setModalStartDateValue);
+      const endDate = new Date(setModalEndDateValue);
+
+      while (startDate < endDate) {
+        eventData.dates.push({
+          id_calendar: DateNow,
+          date: startDate.toISOString().split("T")[0],
+          is_available: getModalCheckedRadioBtnValue === "Danger" ? 0 : 1
+        });
+
+        startDate.setDate(startDate.getDate() + 1);
+      }
+
+      // Panggil fungsi saveEventByProdukId dengan produk_id dan eventData
+      saveEventByProdukId(produk_id, eventData);
+
       closeModal();
     });
 
@@ -312,5 +346,126 @@ document.addEventListener("DOMContentLoaded", function () {
         closeModal();
       }
     });
+
+
+    // FETXH API EVENT
+    // Fetch events and update calendarEventsList
+    function getEventByProdukId(produk_id) {
+      fetch(`https://website-hotel-dieng.test/api/v1/availability/${produk_id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+      })
+      .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+      })
+      .then(data => {
+      fetchEvents = data;
+      updateCalendarEventsList();
+      calendar.removeAllEvents();
+      calendar.addEventSource(calendarEventsList);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    }
+
+    function saveEventByProdukId(produk_id, eventData) {
+      const url = `https://website-hotel-dieng.test/api/v1/availability/${produk_id}`;
+      const method = 'POST';
+
+      // Pastikan eventData adalah array dates yang sesuai dengan validasi controller
+      const requestData = {
+        dates: Array.isArray(eventData.dates) ? eventData.dates : [eventData]
+      };
+
+      fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          showSuccessSwal('Berhasil', data.message);
+          // Refresh calendar events
+          // getEventByProdukId(produk_id);
+        })
+        .catch(error => {
+          showSuccessSwal('Gagal', error.message || error);
+          console.error('Error:', error);
+        });
+    }
+
+    // Fungsi untuk memperbarui event di server
+    function updateEventOnServer(eventId, produk_id, eventData) {
+      const url = `https://website-hotel-dieng.test/api/v1/availability/${produk_id}/${eventId}`;
+      const method = 'PUT'; // Gunakan PUT untuk update
+
+      fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          showSuccessSwal('Berhasil', data.message || 'Event updated successfully.');
+          // Refresh calendar events dari server untuk memastikan sinkronisasi
+          getEventByProdukId(produk_id);
+        })
+        .catch(error => {
+          showSuccessSwal('Gagal', error.message || error);
+          console.error('Error:', error);
+        });
+    }
+
+    // Fungsi untuk menghapus event dari server
+    function deleteEventFromServer(eventId, produk_id) {
+      const url = `https://website-hotel-dieng.test/api/v1/availability/${produk_id}/${eventId}`;
+      const method = 'DELETE';
+
+      fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          showSuccessSwal('Berhasil', data.message || 'Event deleted successfully.');
+          // Refresh calendar events
+          getEventByProdukId(produk_id);
+        })
+        .catch(error => {
+          showSuccessSwal('Gagal', error.message || error);
+          console.error('Error:', error);
+        });
+    }
   }
 });

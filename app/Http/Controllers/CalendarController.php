@@ -11,9 +11,12 @@ class CalendarController extends Controller
      */
     public function index()
     {
+        $products = FetchAPI('https://website-hotel-dieng.test/api/v1/products');
+
         return view('calendar.index', [
             'title' => 'Ketersediaan',
             'description' => 'Halaman untuk mengelola Tanggal Reservasi',
+            'products'=> $products
         ]);
     }
 
@@ -38,7 +41,13 @@ class CalendarController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = FetchAPI('https://website-hotel-dieng.test/api/v1/products/'. $id);
+
+        return view('calendar.show', [
+            'title' => 'Ketersediaan Detail',
+            'description' => 'Halaman untuk mengelola Tanggal Reservasi',
+            'product'=> $product
+        ]);
     }
 
     /**

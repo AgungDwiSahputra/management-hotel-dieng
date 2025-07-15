@@ -32,7 +32,8 @@
         },
         "files": [
             "app/Helpers/Route.php",
-            "app/Helpers/CreateLink.php"
+            "app/Helpers/CreateLink.php",
+            "app/Helpers/FetchAPI.php"
         ]
     },
     "autoload-dev": {
