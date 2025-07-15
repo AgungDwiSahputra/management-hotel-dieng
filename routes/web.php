@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-include __DIR__ . '/developer.php';
-include __DIR__ . '/admin.php';
-
 Route::get('/', function () {
+    if(auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return redirect()->route('login');
 });
 
@@ -24,4 +27,8 @@ Route::get('/', function () {
 Auth::routes();
 // ================================================
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth', 'role:admin|developer'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('reservation', ReservationController::class);
+    Route::resource('calendar', CalendarController::class);
+});

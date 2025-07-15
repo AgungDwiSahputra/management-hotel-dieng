@@ -29,7 +29,12 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/Route.php",
+            "app/Helpers/CreateLink.php",
+            "app/Helpers/FetchAPI.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
