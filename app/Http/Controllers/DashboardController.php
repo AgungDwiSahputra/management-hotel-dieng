@@ -9,7 +9,7 @@
   {
       public function index()
       {
-            $url = "https://website-hotel-dieng.test/api/v1/reservations";
+            $url = env('URL_API') . "/api/v1/reservations";
 
             $headers = array(
                 "Authorization: Bearer " . env('SANCTUM_TOKEN_PREFIX', '6|3|e6bf715df350e35ecdda5b73d4dda5c0bafab902033cee003ea5e104774ebdc6jQAGz3B9E9i71hgNenc6aK0gbDUt4wibSNUcihF050c17ac0dricciR9QuFRqEOzQOauWoyiviQPtxmk3Y8YNOP16ef955f0')
