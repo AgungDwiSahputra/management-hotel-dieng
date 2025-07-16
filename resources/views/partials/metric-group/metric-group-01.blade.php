@@ -6,7 +6,7 @@
     <x-box.metric-item title="Total Pemesanan (Semua)" count="{{ 'Rp. ' . number_format($countTotalReservation, 0, ',', '.') }}" />
 
     <!-- Total Produk -->
-    <x-box.metric-item title="Total Produk" count="{{ $countProcuts ?? 0 }}" />
+    <x-box.metric-item title="Total Produk" count="{{ $countProducts ?? 0 }}" />
 
     <!-- Total Pemesanan -->
     <x-box.metric-item title="Total Pemesanan" count="{{ $countReservations ?? 0 }}" />
