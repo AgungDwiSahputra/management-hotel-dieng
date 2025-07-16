@@ -35,7 +35,7 @@
 
     <script>
         function approveAllReservation(transaksi_id) {
-            fetch(`https://vilahoteldieng.com/api/v1/reservations/${transaksi_id}/acceptAll`, {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${transaksi_id}/acceptAll`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
@@ -59,7 +59,7 @@
         }
 
         function approveReservation(id) {
-            fetch(`https://vilahoteldieng.com/api/v1/reservations/${id}/accept`, {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${id}/accept`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
@@ -83,7 +83,7 @@
         }
 
         function rejectReservation(id) {
-            fetch(`https://vilahoteldieng.com/api/v1/reservations/${id}/reject`, {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${id}/reject`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda

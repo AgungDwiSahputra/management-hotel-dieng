@@ -9,22 +9,81 @@
   {
       public function index()
       {
-            $url = env('URL_API') . "/api/v1/reservations";
+            $reservations = $this->getReservations() ?? [];
+            $products = $this->getProducts() ?? [];
 
-            $headers = array(
-                "Authorization: Bearer " . env('SANCTUM_TOKEN_PREFIX', '6|3|e6bf715df350e35ecdda5b73d4dda5c0bafab902033cee003ea5e104774ebdc6jQAGz3B9E9i71hgNenc6aK0gbDUt4wibSNUcihF050c17ac0dricciR9QuFRqEOzQOauWoyiviQPtxmk3Y8YNOP16ef955f0')
-            );
-
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            $response = json_decode(curl_exec($ch), true);
-            curl_close($ch);
-            
             return view('index', [
                 'title' => 'Dashboard Admin',
                 'description' => 'Halaman utama untuk admin',
-                'reservations'=> $response
+                'reservations' => $reservations,
+                'countReservations' => count($reservations),
+                'countTotalReservation' => $this->countTotalReservation(),
+                'countTotalReservationPerMonth' => $this->countTotalReservationPerMonth(),
+                'percentTotalReservationPerMonth' => $this->percentTotalReservationPerMonth(),
+                'products' => $products,
+                'countProducts' => count($products),
             ]);
       }
+
+        // ================ Area Function Reservations ================
+        // get reservations
+        private function getReservations(){
+            $reservations = FetchAPI(env('URL_API') . "/api/v1/reservations");
+            return $reservations;
+        }
+        // Count reservation perMonth
+        private function countTotalReservationPerMonth(){
+            $reservations = $this->getReservations() ?? [];
+            $changePercentPerMonth = [];
+            foreach($reservations as $reservation){
+                $month = date('m', strtotime($reservation['created_at']));
+                if(!isset($changePercentPerMonth[$month])){
+                    $changePercentPerMonth[$month] = 0;
+                }
+                $changePercentPerMonth[$month] += $reservation['total'];
+            }
+            return $changePercentPerMonth;
+        }
+        // Count reservation perMonth
+        private function percentTotalReservationPerMonth(){
+            $reservations = $this->getReservations() ?? [];
+            $lastMonth = (int) date('m') - 1;
+            $lastMonthTotal = 0;
+            $currentMonthTotal = 0;
+
+            foreach($reservations as $reservation){
+                $month = (int) date('m', strtotime($reservation['created_at']));
+                if($month == $lastMonth){
+                    $lastMonthTotal += $reservation['total'];
+                }
+                if($month == (int) date('m')){
+                    $currentMonthTotal += $reservation['total'];
+                }
+            }
+
+            $percent = 0;
+            if($lastMonthTotal > 0){
+                $percent = ($currentMonthTotal - $lastMonthTotal) / $lastMonthTotal * 100;
+            }
+
+            return $percent;
+        }
+        // count all reservation total
+        private function countTotalReservation(){
+            $reservations = $this->getReservations() ?? [];
+            $total = 0;
+            foreach($reservations as $reservation){
+                $total += $reservation['total'];
+            }
+            return $total;
+        }
+        // ================ End Area Function Reservations ================
+
+        // ================ Area Function Products ================
+        // get products
+        private function getProducts(){
+            $products = FetchAPI(env('URL_API') . "/api/v1/products");
+            return $products;
+        }
+        // ================ End Area Function Products ================
   }

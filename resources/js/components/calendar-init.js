@@ -351,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // FETXH API EVENT
     // Fetch events and update calendarEventsList
     function getEventByProdukId(produk_id) {
-      fetch(`https://vilahoteldieng.com/api/v1/availability/${produk_id}`, {
+      fetch(`https://villahoteldieng.com/api/v1/availability/${produk_id}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${API_KEY}`,
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function saveEventByProdukId(produk_id, eventData) {
-      const url = `https://vilahoteldieng.com/api/v1/availability/${produk_id}`;
+      const url = `https://villahoteldieng.com/api/v1/availability/${produk_id}`;
       const method = 'POST';
 
       // Pastikan eventData adalah array dates yang sesuai dengan validasi controller
@@ -411,7 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fungsi untuk memperbarui event di server
     function updateEventOnServer(eventId, produk_id, eventData) {
-      const url = `https://vilahoteldieng.com/api/v1/availability/${produk_id}/${eventId}`;
+      const url = `https://villahoteldieng.com/api/v1/availability/${produk_id}/${eventId}`;
       const method = 'PUT'; // Gunakan PUT untuk update
 
       fetch(url, {
@@ -441,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fungsi untuk menghapus event dari server
     function deleteEventFromServer(eventId, produk_id) {
-      const url = `https://vilahoteldieng.com/api/v1/availability/${produk_id}/${eventId}`;
+      const url = `https://villahoteldieng.com/api/v1/availability/${produk_id}/${eventId}`;
       const method = 'DELETE';
 
       fetch(url, {
