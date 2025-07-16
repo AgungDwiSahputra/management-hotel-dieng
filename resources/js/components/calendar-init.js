@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function saveEventByProdukId(produk_id, eventData) {
       const url = `https://villahoteldieng.com/api/v1/availability/${produk_id}`;
-      const method = 'PUT';
+      const method = 'POST';
 
       // Pastikan eventData adalah array dates yang sesuai dengan validasi controller
       const requestData = {
