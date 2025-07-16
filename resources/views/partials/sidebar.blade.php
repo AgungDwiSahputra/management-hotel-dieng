@@ -19,7 +19,7 @@
         <!-- Sidebar Menu -->
         <nav x-data="{ selected: $persist('Dashboard') }">
             <!-- Menu Group -->
-            <div>
+            <div class="relative h-full">
                 <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
                     <span class="menu-group-title" :class="sidebarToggle ? 'lg:hidden' : ''">
                         MENU
@@ -98,4 +98,5 @@
         </nav>
         <!-- Sidebar Menu -->
     </div>
+    <span :class="sidebarToggle ? 'lg:hidden' : ''" class="block absolute bottom-5 text-center text-xs text-gray-600">Copyright &copy; {{ date('Y') }} | <a href="http://developerdigital.web.id" target="_blank" class="underline text-blue-600 hover:text-blue-800">Dev. Digital</a> - Cv. De Kreatif</span>
 </aside>
