@@ -93,8 +93,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                             <label for="remember"
                                                 class="flex items-center text-sm font-normal text-gray-700 cursor-pointer select-none dark:text-gray-400">
                                                 <div class="relative">
-                                                    <input type="checkbox" name="remember" id="remember" class="sr-only"
-                                                        @change="checkboxToggle = !checkboxToggle" />
+                                                    <input type="checkbox" name="remember" id="remember"
+                                                        class="sr-only" @change="checkboxToggle = !checkboxToggle" />
                                                     <div :class="checkboxToggle ? 'border-brand-500 bg-brand-500' :
                                                         'bg-transparent border-gray-300 dark:border-gray-700'"
                                                         class="mr-3 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]">
@@ -119,6 +119,11 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                             Sign In
                                         </button>
                                     </div>
+
+                                    <span class="block md:hidden w-full text-center mt-10 text-sm text-gray-600">Copyright &copy; {{ date('Y') }}
+                                        | <a href="http://developerdigital.web.id" target="_blank"
+                                            class="underline text-blue-600 hover:text-blue-800">Dev. Digital</a> - Cv.
+                                        De Kreatif</span>
                                 </div>
                             </form>
                         </div>
@@ -131,13 +136,18 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     <!-- ===== Common Grid Shape Start ===== -->
                     @include('partials.common-grid-shape')
                     <div class="flex flex-col items-center max-w-md">
-                        <a href="index.html" class="block mb-4">
+                        <a href="/" class="block mb-4">
                             <img class="h-20" src="{{ asset('assets/images/logo.png') }}" alt="Logo" />
                         </a>
                         <p class="text-center text-gray-400 dark:text-white/60">
                             Villa Hotel Dieng, penginapan yang menawarkan kenyamanan dan kemewahan di tengah
                             suasana tropis Bali.
                         </p>
+
+                        <span class="block mt-10 text-sm text-gray-400">Copyright &copy; {{ date('Y') }} | <a
+                                href="http://developerdigital.web.id" target="_blank"
+                                class="underline text-blue-600 hover:text-blue-800">Dev. Digital</a> - Cv. De
+                            Kreatif</span>
                     </div>
                 </div>
             </div>
