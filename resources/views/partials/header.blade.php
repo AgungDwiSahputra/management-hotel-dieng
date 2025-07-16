@@ -32,7 +32,7 @@
             </button>
             <!-- Hamburger Toggle BTN -->
 
-            <a href="index.html" class="lg:hidden">
+            <a href="/" class="lg:hidden">
                 <img class="h-10 dark:hidden" src="{{ asset('assets/images/logo.png') }}" alt="Logo" />
                 <img class="h-10 hidden dark:block" src="{{ asset('assets/images/logo.png') }}" alt="Logo" />
             </a>
