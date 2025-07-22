@@ -16,17 +16,12 @@
                     <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
                         Nama Unit : {{ $product['name'] ?? 'Nama Villa' }}
                     </h3>
-                </div>
-                {{-- <div class="border-t border-gray-100 dark:border-gray-800">
-
-                    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-                        <div id="calendar" class="w-full mx-auto" data-api-key="{{  env('SANCTUM_TOKEN_PREFIX', '') }}" data-product-id="{{ $product['id'] }}"></div>
+                    <div class="flex justify-start space-x-2">
+                        <button type="button"
+                            class="btn-modal-add-event bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-400 transition"
+                            data-modal-target="update-modal-0" data-modal-toggle="update-modal-0">Kelola Unit</button>
                     </div>
-
-                    @include('partials.calendar-event-modal')
-
-                </div> --}}
-
+                </div>
                 <div class="border-t border-gray-100 dark:border-gray-800">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 py-4 px-5 sm:px-6">
                         <div>
@@ -43,7 +38,6 @@
                             </div>
                         </div>
 
-                        {{-- @include('partials.calendar-event-modal') --}}
                         <div
                             class="rounded-2xl p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
                             @if ($errors->any())
@@ -66,7 +60,8 @@
                                 <!-- Untuk pengurangan Unit yang tersedia -->
                                 <input type="hidden" id="totalUnitPerDate" name="totalUnitPerDate"
                                     value="{{ json_encode($totalUnitPerDate ?? []) }}" />
-                                <div class="mt-6">
+                                <span class="block text-gray-500 text-sm dark:text-gray-400">Reservation Manual</span>
+                                <div class="mt-4">
                                     <div>
                                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Jumlah Unit Tersedia
@@ -99,18 +94,6 @@
                                             Masukkan Tanggal
                                         </label>
                                         <div class="relative">
-                                            {{-- <input id="event-date" type="date" name="date_pick"
-                                                class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                                                onfocus="this.showPicker()" />
-                                            <span class="absolute right-3.5 top-1/2 -translate-y-1/2">
-                                                <svg class="fill-gray-700 dark:fill-gray-400" width="14" height="14"
-                                                    viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M4.33317 0.0830078C4.74738 0.0830078 5.08317 0.418794 5.08317 0.833008V1.24967H8.9165V0.833008C8.9165 0.418794 9.25229 0.0830078 9.6665 0.0830078C10.0807 0.0830078 10.4165 0.418794 10.4165 0.833008V1.24967L11.3332 1.24967C12.2997 1.24967 13.0832 2.03318 13.0832 2.99967V4.99967V11.6663C13.0832 12.6328 12.2997 13.4163 11.3332 13.4163H2.6665C1.70001 13.4163 0.916504 12.6328 0.916504 11.6663V4.99967V2.99967C0.916504 2.03318 1.70001 1.24967 2.6665 1.24967L3.58317 1.24967V0.833008C3.58317 0.418794 3.91896 0.0830078 4.33317 0.0830078ZM4.33317 2.74967H2.6665C2.52843 2.74967 2.4165 2.8616 2.4165 2.99967V4.24967H11.5832V2.99967C11.5832 2.8616 11.4712 2.74967 11.3332 2.74967H9.6665H4.33317ZM11.5832 5.74967H2.4165V11.6663C2.4165 11.8044 2.52843 11.9163 2.6665 11.9163H11.3332C11.4712 11.9163 11.5832 11.8044 11.5832 11.6663V5.74967Z"
-                                                        fill="" />
-                                                </svg>
-                                            </span> --}}
-
                                             <div id="date-range-picker" date-rangepicker class="flex items-center">
                                                 <div class="relative">
                                                     <div
@@ -163,8 +146,8 @@
                                                             stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                     </svg>
                                                 </button>
-                                                <input type="text" id="unit-count" name="unit_count"
-                                                    data-input-counter data-input-counter-min="1"
+                                                <input type="text" id="unit-count" name="unit_count" data-input-counter
+                                                    data-input-counter-min="1"
                                                     data-input-counter-max="{{ $product['unit'] ?? 1 }}"
                                                     aria-describedby="helper-text-explanation"
                                                     class="bg-gray-50 border-x-0 border-gray-300 h-11 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -202,11 +185,27 @@
                     </div>
                 </div>
                 <div class="rounded-2xl m-4 p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-                    <table id="table-events"></table>
+                    <span class="block mb-4 text-gray-500 text-sm dark:text-gray-400">Daftar Reservation</span>
+                    <div class="overflow-x-auto w-full">
+                        <table id="table-events"></table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <x-modals.modal-form type="update" key="0" textButton="Simpan" :data="[
+        'title' => 'Manage Unit Produk',
+        'form' => [
+            [
+                'type' => 'number',
+                'name' => 'unit',
+                'label' => 'Jumlah Unit',
+                'value' => $product['unit'] ?? 0,
+            ],
+        ],
+        'action' => route('calendar.updateProductUnit', ['product' => $product['id'] ?? '']),
+    ]" />
 @endsection
 
 @push('scripts')
