@@ -38,8 +38,8 @@
                     <!-- Menu Item Dashboard -->
                     <li>
                         <a href="{{ route('dashboard') }}"
-                            class="menu-item group {{ isCurrentRoute('dashboard') ? 'menu-item-active' : 'menu-item-inactive'}}">
-                            <svg class="{{ isCurrentRoute('dashboard') ? 'menu-item-icon-active' : 'menu-item-icon-inactive'}}"
+                            class="menu-item group {{ isCurrentRoute('dashboard') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                            <svg class="{{ isCurrentRoute('dashboard') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -54,10 +54,40 @@
                     </li>
                     <!-- Menu Item Dashboard -->
 
+                    <!-- Menu Item Product -->
+                    @if (auth()->check() && auth()->user()->isPartner())
+                        <li>
+                            <a href="{{ route('product.index') }}"
+                                class="menu-item group {{ isCurrentRoute('product') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg class="{{ isCurrentRoute('product') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    fill="#000000" width="24" height="24" viewBox="0 0 128 128" id="Layer_1"
+                                    version="1.1" xml:space="preserve">
+                                    <g>
+                                        <rect height="8" width="64" x="53" y="17" />
+                                        <rect height="8" width="64" x="53" y="60" />
+                                        <rect height="8" width="64" x="53" y="103" />
+                                        <path
+                                            d="M21,121c7.7,0,14-6.3,14-14s-6.3-14-14-14S7,99.3,7,107S13.3,121,21,121z M21,101c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,101,21,101z" />
+                                        <path
+                                            d="M21,78c7.7,0,14-6.3,14-14s-6.3-14-14-14S7,56.3,7,64S13.3,78,21,78z M21,58c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,58,21,58z" />
+                                        <path
+                                            d="M21,35c7.7,0,14-6.3,14-14S28.7,7,21,7S7,13.3,7,21S13.3,35,21,35z M21,15c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,15,21,15z" />
+                                    </g>
+                                </svg>
+
+                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                    Produk
+                                </span>
+                            </a>
+                        </li>
+                    @endif
+                    <!-- Menu Item Product -->
+
                     <!-- Menu Item Calendar -->
                     <li>
-                        <a href="{{ route('calendar.index') }}" class="menu-item group {{ isCurrentRoute('calendar') ? 'menu-item-active' : 'menu-item-inactive'}}">
-                            <svg class="{{ isCurrentRoute('calendar') ? 'menu-item-icon-active' : 'menu-item-icon-inactive'}}"
+                        <a href="{{ route('calendar.index') }}"
+                            class="menu-item group {{ isCurrentRoute('calendar') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                            <svg class="{{ isCurrentRoute('calendar') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -75,8 +105,9 @@
                     <!-- Menu Item Reservation -->
                     @if (auth()->check() && (auth()->user()->isDeveloper() || auth()->user()->isPartner()))
                         <li>
-                            <a href="{{ route('reservation.index') }}" class="menu-item group {{ isCurrentRoute('reservation') ? 'menu-item-active' : 'menu-item-inactive'}}">
-                                <svg class="{{ isCurrentRoute('reservation') ? 'menu-item-icon-active' : 'menu-item-icon-inactive'}}"
+                            <a href="{{ route('reservation.index') }}"
+                                class="menu-item group {{ isCurrentRoute('reservation') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg class="{{ isCurrentRoute('reservation') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -98,5 +129,8 @@
         </nav>
         <!-- Sidebar Menu -->
     </div>
-    <span :class="sidebarToggle ? 'lg:hidden' : ''" class="block absolute bottom-5 text-center text-xs text-gray-600">Copyright &copy; {{ date('Y') }} | <a href="http://developerdigital.web.id" target="_blank" class="underline text-blue-600 hover:text-blue-800">Dev. Digital</a> - Cv. De Kreatif</span>
+    <span :class="sidebarToggle ? 'lg:hidden' : ''"
+        class="block absolute bottom-5 text-center text-xs text-gray-600">Copyright &copy; {{ date('Y') }} | <a
+            href="http://developerdigital.web.id" target="_blank"
+            class="underline text-blue-600 hover:text-blue-800">Dev. Digital</a> - Cv. De Kreatif</span>
 </aside>

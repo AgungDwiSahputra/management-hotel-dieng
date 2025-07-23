@@ -1,7 +1,9 @@
+
 <?php
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +31,7 @@ Auth::routes();
 
 Route::middleware(['auth', 'role:admin|developer|partner'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('product', ProductController::class);
     Route::resource('reservation', ReservationController::class);
     Route::resource('calendar', CalendarController::class);
     Route::post('calendar/{product}/updateProductUnit', [CalendarController::class, 'updateProductUnit'])->name('calendar.updateProductUnit');

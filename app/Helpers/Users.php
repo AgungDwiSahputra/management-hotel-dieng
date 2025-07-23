@@ -16,6 +16,10 @@ if (! function_exists('filterByOwner')) {
         if ($owner === null || !$owner->isPartner()) { // Check if the user is a partner
             return $datas;
         }
+        
+        if (!is_array($datas)) {
+            return [];
+        }
 
         return array_filter($datas, function ($data) use ($atribute, $owner) {
             return isset($data[$atribute]) && strtolower($data[$atribute]) === strtolower($owner->email);

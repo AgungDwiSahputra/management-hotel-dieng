@@ -10,6 +10,16 @@ if (! function_exists('FetchAPIMethod')) {
     {
         return FetchAPIMethod($url, 'POST', $data);
     }
+    
+    function FetchAPIUpdate($url, $data)
+    {
+        return FetchAPIMethod($url, 'PUT', $data);
+    }
+
+    function FetchAPIDelete($url)
+    {
+        return FetchAPIMethod($url, 'DELETE');
+    }
 
     function FetchAPIMethod($url, $method, $data = [])
     {
