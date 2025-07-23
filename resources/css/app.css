@@ -770,5 +770,5 @@ span.flatpickr-weekday,
 }
 
 .flatpickr-innerContainer{
-  @apply justify-center;
+  @apply justify-start sm:justify-center !w-full !overflow-auto;
 }

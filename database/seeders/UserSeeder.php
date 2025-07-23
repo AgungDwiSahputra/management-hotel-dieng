@@ -34,10 +34,22 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
         ];
 
+        $partnerUser = [
+            'name' => 'Partner User',
+            'email' => 'partner@app.com',
+            'email_verified_at'=> now(),
+            'password' => bcrypt('password'),
+        ];
+
         $userService = new UserService(new User());
         if(!$userService->getAdmins()->count()){
-            $userService->createDeveloper($developerUser);
             $userService->createAdmin($adminUser);
+        }
+        if(!$userService->getDevelopers()->count()){
+            $userService->createDeveloper($developerUser);
+        }
+        if(!$userService->getPartners()->count()){
+            $userService->createPartner($partnerUser);
         }
     }
 }

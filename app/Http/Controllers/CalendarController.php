@@ -11,7 +11,7 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        $products = FetchAPI(env('URL_API') . '/api/v1/products');
+        $products = getAllProducts() ?? [];
 
         return view('calendar.index', [
             'title' => 'Ketersediaan',
@@ -42,7 +42,7 @@ class CalendarController extends Controller
         $requestData['end_date'] = date('Y-m-d', strtotime($requestData['end_date']));
 
         $productId = $requestData['product_id'];
-        $product = FetchAPI(env('URL_API') . "/api/v1/products/{$productId}");
+        $product = getProductById($productId);
 
         if (!$product) {
             return redirect()->back()->withErrors([
