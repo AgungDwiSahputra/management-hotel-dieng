@@ -73,7 +73,7 @@
                     <!-- Menu Item Calendar -->
 
                     <!-- Menu Item Reservation -->
-                    @if (auth()->check() && auth()->user()->isDeveloper())
+                    @if (auth()->check() && (auth()->user()->isDeveloper() || auth()->user()->isPartner()))
                         <li>
                             <a href="{{ route('reservation.index') }}" class="menu-item group {{ isCurrentRoute('reservation') ? 'menu-item-active' : 'menu-item-inactive'}}">
                                 <svg class="{{ isCurrentRoute('reservation') ? 'menu-item-icon-active' : 'menu-item-icon-inactive'}}"

@@ -29,10 +29,10 @@ Auth::routes();
 
 Route::middleware(['auth', 'role:admin|developer|partner'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('reservation', ReservationController::class);
     Route::resource('calendar', CalendarController::class);
     Route::post('calendar/{product}/updateProductUnit', [CalendarController::class, 'updateProductUnit'])->name('calendar.updateProductUnit');
 });
 
 Route::middleware(['auth', 'role:admin|developer'])->group(function () {
-    Route::resource('reservation', ReservationController::class);
 });
