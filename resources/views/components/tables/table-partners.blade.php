@@ -1,30 +1,20 @@
 @props([
-    'headers' => ['ID', 'Nama Produk', 'Kamar', 'Max. Orang', 'Harga Weekday', 'Harga Weekend', 'Dibuat', 'Action'],
+    'headers' => ['ID', 'Nama Partner', 'Email', 'Tanggal Buat', 'Action'],
     'rows' => [
         [
-            'id' => 'd03d9b8e-6a20-407e-8a24-4c5d266466b7',
-            'category_id' => 'cd12155b-fca6-4418-8515-a2e9dacc97e3',
-            'owner' => 'admin@app.com',
-            'name' => '1 Kamar Best View Lantai 3',
-            'slug' => '1-kamar-best-view-lantai-3',
-            'unit' => 1,
-            'kamar' => 1,
-            'orang' => 4,
-            'maks_orang' => 6,
-            'lokasi' => '1 Kamar Best View Lantai 3',
-            'harga_weekday' => 500000,
-            'harga_weekend' => 600000,
-            'label' => null,
-            'urutan' => 5,
-            'status' => 'draft',
-            'created_at' => '2025-07-01T23:58:02.000000Z',
-            'updated_at' => '2025-07-01T23:58:12.000000Z',
+            "id" => 4,
+            "name" => "Partner User",
+            "email" => "partner@app.com",
+            "email_verified_at" => "2025-07-22 07:23:34",
+            "remember_token" => "zlWyOdUsf6Ss90QTkr3ketwK2FQnD1f5emDG2QMdjClKDyzHVUGGaKLJOzun",
+            "created_at" => "2025-07-22 07:23:34",
+            "updated_at" => "2025-07-22 07:23:34",
         ],
     ],
     'btnAction' => [
         [
-            'label' => 'Ketersediaan',
-            'route' => 'calendar.show',
+            'label' => 'Ubah',
+            'route' => 'partner.edit',
             'method' => null,
         ],
     ],
@@ -55,7 +45,7 @@
                         @isset($row['id'])
                             <td class="px-5 py-4 sm:px-6">
                                 <span class="text-gray-500 text-theme-xs font-bold">
-                                    {{ strtoupper(substr($row['id'], 0, 2)) }}
+                                    {{ $row['id'] }}
                                 </span>
                             </td>
                         @endisset
@@ -66,36 +56,9 @@
                                 </span>
                             </td>
                         @endisset
-                        @isset($row['slug'])
+                        @isset($row['email'])
                             <td class="px-5 py-4 sm:px-6">
-                                <span class="text-gray-700 dark:text-gray-300 font-semibold">{{ $row['slug'] }}</span>
-                            </td>
-                        @endisset
-                        @isset($row['unit'])
-                            <td class="px-5 py-4 sm:px-6">
-                                <span class="text-gray-700 dark:text-gray-300 font-semibold">{{ $row['unit'] }}</span>
-                            </td>
-                        @endisset
-                        @isset($row['kamar'])
-                            <td class="px-5 py-4 sm:px-6">
-                                <span class="text-gray-700 dark:text-gray-300 font-semibold">{{ $row['kamar'] }}</span>
-                            </td>
-                        @endisset
-                        @isset($row['maks_orang'])
-                            <td class="px-5 py-4 sm:px-6">
-                                <span class="text-gray-500 text-theme-sm dark:text-gray-400">{{ $row['maks_orang'] }}</span>
-                            </td>
-                        @endisset
-                        @isset($row['harga_weekday'])
-                            <td class="px-5 py-4 sm:px-6">
-                                <span
-                                    class="text-gray-500 text-theme-sm dark:text-gray-400">Rp{{ number_format($row['harga_weekday'], 0, ',', '.') }}</span>
-                            </td>
-                        @endisset
-                        @isset($row['harga_weekend'])
-                            <td class="px-5 py-4 sm:px-6">
-                                <span
-                                    class="text-gray-500 text-theme-sm dark:text-gray-400">Rp{{ number_format($row['harga_weekend'], 0, ',', '.') }}</span>
+                                <span class="text-gray-700 dark:text-gray-300 font-semibold">{{ $row['email'] }}</span>
                             </td>
                         @endisset
                         @isset($row['created_at'])

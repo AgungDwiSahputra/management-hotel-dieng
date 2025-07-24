@@ -87,9 +87,9 @@
                     <!-- Menu Item Tambah Partner -->
                     @if (auth()->check() && auth()->user()->isAdmin())
                         <li>
-                            <a href="{{ route('product.index') }}"
-                                class="menu-item group {{ isCurrentRoute('product') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ isCurrentRoute('product') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                            <a href="{{ route('partner.index') }}"
+                                class="menu-item group {{ isCurrentRoute('partner') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg class="{{ isCurrentRoute('partner') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" stroke-width="3" stroke="#000000" fill="none"><circle cx="22.83" cy="22.57" r="7.51"/><path d="M38,49.94a15.2,15.2,0,0,0-15.21-15.2h0a15.2,15.2,0,0,0-15.2,15.2Z"/><circle cx="44.13" cy="27.22" r="6.05"/><path d="M42.4,49.94h14A12.24,12.24,0,0,0,44.13,37.7h0a12.21,12.21,0,0,0-5.75,1.43"/></svg>
 
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">

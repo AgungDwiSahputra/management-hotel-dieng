@@ -2,10 +2,14 @@
     'action' => route('partner.store'),
     'method' => 'post',
     'inputs' => [
-        'name' => ['label' => 'Nama Produk', 'type' => 'text', 'value' => old('name')],
-        'unit' => ['label' => 'Jumlah Unit', 'type' => 'number', 'value' => old('unit')],
-        'harga_weekday' => ['label' => 'Harga Weekday', 'type' => 'number', 'value' => old('harga_weekday')],
-        'harga_weekend' => ['label' => 'Harga Weekend', 'type' => 'number', 'value' => old('harga_weekend')],
+        'name' => ['label' => 'Nama Partner', 'type' => 'text', 'value' => old('name')],
+        'email' => ['label' => 'Email', 'type' => 'email', 'value' => old('email')],
+        'password' => ['label' => 'Password', 'type' => 'text', 'value' => old('password')],
+        'password_confirmation' => [
+            'label' => 'Konfirmasi Password',
+            'type' => 'text',
+            'value' => old('password_confirmation'),
+        ],
     ],
     'btnCancel' => [
         'label' => 'Batal',
@@ -32,6 +36,8 @@
             <div>
                 @if ($input['type'] === 'text')
                     <x-form.input-text name="{{ $name }}" label="{{ $input['label'] }}" value="{{ $input['value'] }}" />
+                @elseif ($input['type'] === 'email')
+                    <x-form.input-email name="{{ $name }}" label="{{ $input['label'] }}" value="{{ $input['value'] }}" />
                 @elseif ($input['type'] === 'number')
                     <x-form.input-number name="{{ $name }}" label="{{ $input['label'] }}" value="{{ $input['value'] }}" />
                 @endif

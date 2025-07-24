@@ -22,10 +22,10 @@
                         :action="route('product.store')"
                         :method="'post'"
                         :inputs="[
-                            'name' => ['label' => 'Nama Produk', 'type' => 'text', 'value' => old('name')],
-                            'unit' => ['label' => 'Jumlah Unit', 'type' => 'number', 'value' => old('unit')],
-                            'harga_weekday' => ['label' => 'Harga Weekday', 'type' => 'number', 'value' => old('harga_weekday')],
-                            'harga_weekend' => ['label' => 'Harga Weekend', 'type' => 'number', 'value' => old('harga_weekend')],
+                            'name' => ['label' => 'Nama Produk', 'type' => 'text', 'value' => old('name'), 'required' => true],
+                            'unit' => ['label' => 'Jumlah Unit', 'type' => 'number', 'value' => old('unit'), 'required' => true],
+                            'harga_weekday' => ['label' => 'Harga Weekday', 'type' => 'number', 'value' => old('harga_weekday'), 'required' => true],
+                            'harga_weekend' => ['label' => 'Harga Weekend', 'type' => 'number', 'value' => old('harga_weekend'), 'required' => true],
                         ]"
                         :btn-cancel="['label' => 'Batal']"
                         :btn-submit="['label' => 'Simpan']"
