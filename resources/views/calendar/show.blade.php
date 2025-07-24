@@ -16,11 +16,13 @@
                     <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
                         Nama Unit : {{ $product['name'] ?? 'Nama Villa' }}
                     </h3>
-                    {{-- <div class="flex justify-start space-x-2">
-                        <button type="button"
-                            class="btn-modal-add-event bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-400 transition"
-                            data-modal-target="update-modal-0" data-modal-toggle="update-modal-0">Kelola Unit</button>
-                    </div> --}}
+                    @if (auth()->check() && auth()->user()->isDeveloper())
+                        <div class="flex justify-start space-x-2">
+                            <button type="button"
+                                class="btn-modal-add-event bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-400 transition"
+                                data-modal-target="update-modal-0" data-modal-toggle="update-modal-0">Kelola Unit</button>
+                        </div>
+                    @endif
                 </div>
                 <div class="border-t border-gray-100 dark:border-gray-800">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 py-4 px-5 sm:px-6">

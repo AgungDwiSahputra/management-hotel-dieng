@@ -150,22 +150,22 @@ class CalendarController extends Controller
         return $id; // Placeholder for deletion logic
     }
 
-    // /**
-    //  * Handle the AJAX request to update the product unit.
-    //  */
-    // public function updateProductUnit(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'unit' => 'required|integer|min:0',
-    //     ]);
+    /**
+     * Handle the AJAX request to update the product unit.
+     */
+    public function updateProductUnit(Request $request, $id)
+    {
+        $request->validate([
+            'unit' => 'required|integer|min:0',
+        ]);
 
-    //     $product = FetchAPIPost(env('URL_API') . '/api/v1/products/'. $id, $request->only('unit'));
-    //     if (isset($product['error'])) {
-    //         return response()->json(['error' => $product['error']], 400);
-    //     }
+        $product = FetchAPIUpdate(env('URL_API') . '/api/v1/products/'. $id, $request->only('unit'));
+        if (isset($product['error'])) {
+            return response()->json(['error' => $product['error']], 400);
+        }
 
-    //     return redirect()->route('calendar.show', $id)->with([
-    //         'success' => 'Unit produk berhasil diperbarui',
-    //     ]);
-    // }
+        return redirect()->route('calendar.show', $id)->with([
+            'success' => 'Unit produk berhasil diperbarui',
+        ]);
+    }
 }
