@@ -13,6 +13,16 @@ class CalendarController extends Controller
     {
         $products = getAllProducts() ?? [];
 
+        $products = array_map(function ($product) {
+            return [
+                'id' => $product['id'],
+                'name' => $product['name'],
+                'unit' => $product['unit'],
+                'harga_weekday' => $product['harga_weekday'],
+                'harga_weekend' => $product['harga_weekend'],
+            ];
+        }, $products);
+
         return view('calendar.index', [
             'title' => 'Ketersediaan',
             'description' => 'Halaman untuk mengelola Tanggal Reservasi',
