@@ -9,8 +9,8 @@
   {
       public function index()
       {
-            $reservations = $this->getReservations() ?? [];
-            $products = $this->getProducts() ?? [];
+            $reservations = getAllReservations() ?? [];
+            $products = getAllProducts() ?? [];
 
             return view('index', [
                 'title' => 'Dashboard Admin',
@@ -26,14 +26,9 @@
       }
 
         // ================ Area Function Reservations ================
-        // get reservations
-        private function getReservations(){
-            $reservations = FetchAPI(env('URL_API') . "/api/v1/reservations");
-            return $reservations;
-        }
         // Count reservation perMonth
         private function countTotalReservationPerMonth(){
-            $reservations = $this->getReservations() ?? [];
+            $reservations = getAllReservations() ?? [];
             $changePercentPerMonth = [];
             foreach($reservations as $reservation){
                 $month = date('m', strtotime($reservation['created_at']));
@@ -46,7 +41,7 @@
         }
         // Count reservation perMonth
         private function percentTotalReservationPerMonth(){
-            $reservations = $this->getReservations() ?? [];
+            $reservations = getAllReservations() ?? [];
             $lastMonth = (int) date('m') - 1;
             $lastMonthTotal = 0;
             $currentMonthTotal = 0;
@@ -70,7 +65,7 @@
         }
         // count all reservation total
         private function countTotalReservation(){
-            $reservations = $this->getReservations() ?? [];
+            $reservations = getAllReservations() ?? [];
             $total = 0;
             foreach($reservations as $reservation){
                 $total += $reservation['total'];
@@ -78,12 +73,4 @@
             return $total;
         }
         // ================ End Area Function Reservations ================
-
-        // ================ Area Function Products ================
-        // get products
-        private function getProducts(){
-            $products = FetchAPI(env('URL_API') . "/api/v1/products");
-            return $products;
-        }
-        // ================ End Area Function Products ================
   }

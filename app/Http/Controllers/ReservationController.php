@@ -11,7 +11,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = FetchAPI(env('URL_API') . '/api/v1/reservations');
+        $reservations = getAllReservations();
 
         return view('reservation.index', [
             'title' => 'Reservation',
@@ -41,7 +41,7 @@ class ReservationController extends Controller
      */
     public function show($id)
     {
-        $reservation_details = FetchAPI(env('URL_API') . "/api/v1/reservations/" . $id);
+        $reservation_details = getReservationById($id);
 
         return view('reservation.show', [
             'title' => 'Reservation Details',

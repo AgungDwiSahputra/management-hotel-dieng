@@ -34,6 +34,13 @@ class UserService {
     return $user;
   }
 
+  public function createPartner($request): User
+  {
+    $user = $this->create($request);
+    $user->assignRole(User::PARTNER);
+    return $user;
+  }
+
   public function get(): Collection
   {
     return $this->user->get();
@@ -51,6 +58,10 @@ class UserService {
   public function getDevelopers(): LengthAwarePaginator
   {
     return $this->user->role(User::DEVELOPER)->paginate();
+  }
+  public function getPartners(): LengthAwarePaginator
+  {
+    return $this->user->role(User::PARTNER)->paginate();
   }
 
   public function findById($id): User

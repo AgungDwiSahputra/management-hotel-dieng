@@ -8,22 +8,22 @@ import './bootstrap';
 // import { createApp } from 'vue';
 
 import "jsvectormap/dist/jsvectormap.min.css";
-import "flatpickr/dist/flatpickr.min.css";
 import "dropzone/dist/dropzone.css";
 import "../css/app.css";
 
 import Alpine from "alpinejs";
 import persist from "@alpinejs/persist";
-import flatpickr from "flatpickr";
-import Dropzone from "dropzone";
+// import Dropzone from "dropzone";
 import Swal from 'sweetalert2';
 
-import chart01 from "./components/charts/chart-01";
-import chart02 from "./components/charts/chart-02";
-import chart03 from "./components/charts/chart-03";
-import map01 from "./components/map-01";
-import "./components/calendar-init.js";
-import "./components/image-resize";
+import "./components/calendar-flatpickr";
+
+// import chart01 from "./components/charts/chart-01";
+// import chart02 from "./components/charts/chart-02";
+// import chart03 from "./components/charts/chart-03";
+// import map01 from "./components/map-01";
+// import "./components/calendar-init.js";
+// import "./components/image-resize";
 
 Alpine.plugin(persist);
 window.Alpine = Alpine;
@@ -80,28 +80,28 @@ window.showErrorSwal = function(title, pesan) {
 // Example usage to ensure the function is used:
 // showConfirmationSwal('Delete Item', 'Do you really want to delete this item?', 'warning');
 
-// Init flatpickr
-flatpickr(".datepicker", {
-  mode: "range",
-  static: true,
-  monthSelectorType: "static",
-  dateFormat: "M j, Y",
-  defaultDate: [new Date().setDate(new Date().getDate() - 6), new Date()],
-  prevArrow:
-    '<svg class="stroke-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.25 6L9 12.25L15.25 18.5" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  nextArrow:
-    '<svg class="stroke-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.75 19L15 12.75L8.75 6.5" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  onReady: (selectedDates, dateStr, instance) => {
-    // eslint-disable-next-line no-param-reassign
-    instance.element.value = dateStr.replace("to", "-");
-    const customClass = instance.element.getAttribute("data-class");
-    instance.calendarContainer.classList.add(customClass);
-  },
-  onChange: (selectedDates, dateStr, instance) => {
-    // eslint-disable-next-line no-param-reassign
-    instance.element.value = dateStr.replace("to", "-");
-  },
-});
+// // Init flatpickr
+// flatpickr(".datepicker", {
+//   mode: "range",
+//   static: true,
+//   monthSelectorType: "static",
+//   dateFormat: "M j, Y",
+//   defaultDate: [new Date().setDate(new Date().getDate() - 6), new Date()],
+//   prevArrow:
+//     '<svg class="stroke-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.25 6L9 12.25L15.25 18.5" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+//   nextArrow:
+//     '<svg class="stroke-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.75 19L15 12.75L8.75 6.5" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+//   onReady: (selectedDates, dateStr, instance) => {
+//     // eslint-disable-next-line no-param-reassign
+//     instance.element.value = dateStr.replace("to", "-");
+//     const customClass = instance.element.getAttribute("data-class");
+//     instance.calendarContainer.classList.add(customClass);
+//   },
+//   onChange: (selectedDates, dateStr, instance) => {
+//     // eslint-disable-next-line no-param-reassign
+//     instance.element.value = dateStr.replace("to", "-");
+//   },
+// });
 
 // Init Dropzone
 const dropzoneArea = document.querySelectorAll("#demo-upload");
@@ -111,12 +111,12 @@ if (dropzoneArea.length) {
 }
 
 // Document Loaded
-document.addEventListener("DOMContentLoaded", () => {
-  chart01();
-  chart02();
-  chart03();
-  map01();
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   chart01();
+//   chart02();
+//   chart03();
+//   map01();
+// });
 
 // Get the current year
 const year = document.getElementById("year");
