@@ -248,7 +248,7 @@ class VillaCalendar {
         try {
             // Membuat request ke server untuk mengambil data ketersediaan produk
             const response = await fetch(
-                `https://website-hotel-dieng.test/api/v1/availability/${this.produkId}`,
+                `https://villahoteldieng.com/api/v1/availability/${this.produkId}`,
                 {
                     // Header yang dikirimkan ke server
                     headers: {
@@ -307,7 +307,7 @@ class VillaCalendar {
             console.error("Fetch events error:", {
                 message: error.message,
                 attempt,
-                url: `https://website-hotel-dieng.test/api/v1/availability/${this.produkId}`,
+                url: `https://villahoteldieng.com/api/v1/availability/${this.produkId}`,
                 apiKey: this.apiKey ? "Provided" : "Missing",
             });
 
@@ -329,7 +329,7 @@ class VillaCalendar {
             // Fetch data reservasi berdasarkan tanggal
             const response = await fetch(
                 // URL API untuk mengambil data reservasi berdasarkan tanggal
-                `https://website-hotel-dieng.test/api/v1/reservations/by-date/${date}`,
+                `https://villahoteldieng.com/api/v1/reservations/by-date/${date}`,
                 {
                     // Method GET
                     method: "GET",
@@ -370,7 +370,7 @@ class VillaCalendar {
         try {
             // Melakukan request POST ke endpoint untuk menyimpan event
             const response = await fetch(
-                `https://website-hotel-dieng.test/api/v1/availability/${this.produkId}`,
+                `https://villahoteldieng.com/api/v1/availability/${this.produkId}`,
                 {
                     method: "POST", // Menggunakan method HTTP POST
                     headers: {

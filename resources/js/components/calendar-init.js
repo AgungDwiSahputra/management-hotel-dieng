@@ -73,7 +73,7 @@ class VillaCalendar {
 
   async fetchEvents() {
     try {
-      const response = await fetch(`https://website-hotel-dieng.test/api/v1/availability/${this.produkId}`, {
+      const response = await fetch(`https://villahoteldieng.com/api/v1/availability/${this.produkId}`, {
         headers: { Authorization: `Bearer ${this.apiKey}`, "Content-Type": "application/json" },
       });
       if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
@@ -212,7 +212,7 @@ class VillaCalendar {
   }
 
   async saveEventToServer(eventData) {
-    const response = await fetch(`https://website-hotel-dieng.test/api/v1/availability/${this.produkId}`, {
+    const response = await fetch(`https://villahoteldieng.com/api/v1/availability/${this.produkId}`, {
       method: "POST",
       headers: { Authorization: `Bearer ${this.apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({ dates: eventData.dates }),
@@ -224,7 +224,7 @@ class VillaCalendar {
   }
 
   async updateEventOnServer(eventId, eventData) {
-    const response = await fetch(`https://website-hotel-dieng.test/api/v1/availability/${this.produkId}/${eventId}`, {
+    const response = await fetch(`https://villahoteldieng.com/api/v1/availability/${this.produkId}/${eventId}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${this.apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify(eventData),
@@ -236,7 +236,7 @@ class VillaCalendar {
   }
 
   async deleteEventFromServer(eventId) {
-    const response = await fetch(`https://website-hotel-dieng.test/api/v1/availability/${this.produkId}/${eventId}`, {
+    const response = await fetch(`https://villahoteldieng.com/api/v1/availability/${this.produkId}/${eventId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${this.apiKey}`, "Content-Type": "application/json" },
     });
