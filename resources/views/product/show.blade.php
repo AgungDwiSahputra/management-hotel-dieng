@@ -22,10 +22,10 @@
                         :action="route('product.update', $product['id'])"
                         :method="'put'"
                         :inputs="[
-                            'name' => ['label' => 'Nama Produk', 'type' => 'text', 'value' => old('name', $product['name'])],
-                            'unit' => ['label' => 'Jumlah Unit', 'type' => 'number', 'value' => old('unit', $product['unit'])],
-                            'harga_weekday' => ['label' => 'Harga Weekday', 'type' => 'number', 'value' => old('harga_weekday', $product['harga_weekday'])],
-                            'harga_weekend' => ['label' => 'Harga Weekend', 'type' => 'number', 'value' => old('harga_weekend', $product['harga_weekend'])],
+                            'name' => ['label' => 'Nama Produk', 'type' => 'text', 'value' => old('name', $product['name']), 'required' => true],
+                            'unit' => ['label' => 'Jumlah Unit', 'type' => 'number', 'value' => old('unit', $product['unit']), 'required' => true],
+                            'harga_weekday' => ['label' => 'Harga Weekday', 'type' => 'number', 'value' => old('harga_weekday', $product['harga_weekday']), 'required' => true],
+                            'harga_weekend' => ['label' => 'Harga Weekend', 'type' => 'number', 'value' => old('harga_weekend', $product['harga_weekend']), 'required' => true],
                         ]"
                         :btn-cancel="['label' => 'Batal']"
                         :btn-submit="['label' => 'Ubah']"

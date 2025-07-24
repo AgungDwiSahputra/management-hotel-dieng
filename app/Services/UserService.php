@@ -41,6 +41,34 @@ class UserService {
     return $user;
   }
 
+  public function updatePartner($id, $request): bool
+  {
+    $datas = [
+        'name' => $request['name'],
+        'email' => $request['email'],
+        'email_verified_at' => now(),
+    ];
+
+    if (!empty($request['password'])) {
+        $datas['password'] = bcrypt($request['password']);
+    }
+
+    $user = $this->getPartnerById($id);
+    if (!$user) {
+        throw new \Exception('Partner not found');
+    }
+    return $user->update($datas);
+  }
+  
+  public function deletePartner($id): bool
+  {
+    $user = $this->getPartnerById($id);
+    if (!$user) {
+        throw new \Exception('Partner not found');
+    }
+    return $user->delete();
+  }
+
   public function get(): Collection
   {
     return $this->user->get();
@@ -59,9 +87,13 @@ class UserService {
   {
     return $this->user->role(User::DEVELOPER)->paginate();
   }
-  public function getPartners(): LengthAwarePaginator
+  public function getPartners()
   {
-    return $this->user->role(User::PARTNER)->paginate();
+    return $this->user->role(User::PARTNER)->get();
+  }
+  public function getPartnerById($id): User
+  {
+    return $this->user->role(User::PARTNER)->find($id);
   }
 
   public function findById($id): User
