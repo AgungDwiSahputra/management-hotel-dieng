@@ -104,7 +104,7 @@ class VillaCalendar {
                 let dateStr = dayElem.dateObj.toISOString().split("T")[0];
                 // menghitung tanggal sebelumnya
                 const previousDate = new Date(dayElem.dateObj);
-                previousDate.setDate(previousDate.getDate() + 1);
+                previousDate.setDate(previousDate.getDate());
                 // mengubah tanggal ke format YYYY-MM-DD
                 dateStr = previousDate.toISOString().split("T")[0];
                 // mencari event yang sesuai dengan tanggal yang dipilih
@@ -130,7 +130,7 @@ class VillaCalendar {
                     // mengambil tanggal yang dipilih
                     const selectedDate = new Date(selectedDates[0]);
                     // menghitung tanggal sebelumnya
-                    selectedDate.setDate(selectedDate.getDate() + 1);
+                    selectedDate.setDate(selectedDate.getDate());
                     // mengubah tanggal ke format YYYY-MM-DD
                     const formattedDate = selectedDate.toISOString().split("T")[0];
 
