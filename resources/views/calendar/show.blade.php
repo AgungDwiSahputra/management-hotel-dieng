@@ -28,7 +28,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 py-4 px-5 sm:px-6">
                         <div>
                             <div class="rounded-2xl p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:col-span-1 max-w-4xl mx-auto"
-                                data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}">
+                                data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}" data-owner="{{ auth()->check() ? GetUser()->email : '' }}" data-isPartner="{{ GetUser()->isPartner() }}">
                                 <div class="flatpickr"></div>
 
                                 <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">

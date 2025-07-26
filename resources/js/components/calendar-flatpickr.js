@@ -25,6 +25,10 @@ class VillaCalendar {
         this.produkId = this.calendarWrapper
             .closest("[data-product-id]")
             ?.getAttribute("data-product-id");
+        this.owner = this.calendarWrapper.closest("[data-owner]")
+            ?.getAttribute("data-owner");
+        this.isPartner = this.calendarWrapper.closest("[data-ispartner]")
+            ?.getAttribute("data-ispartner") === "1";
         if (!this.apiKey || !this.produkId) {
             console.error("Missing API key or product ID", {
                 apiKey: this.apiKey,
@@ -297,6 +301,7 @@ class VillaCalendar {
                 } else if (event.unit > 0 && event.unit < event.product_unit) {
                     bookingStatus = "some";
                 }
+                console.log(bookingStatus, event.date, event.unit, event.product_unit);
                 return { ...event, booking_status: bookingStatus };
             });
 
@@ -340,10 +345,43 @@ class VillaCalendar {
                     },
                 }
             );
-            // Jika response tidak OK maka throw error
-            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-            // Return data reservasi dalam bentuk array of object
-            return await response.json();
+            // Mendapatkan informasi pemilik dan status kemitraan
+            const owner = this.owner ? { email: this.owner.toLowerCase() } : null;
+            const isPartner = this.isPartner;
+            const responseJson = await response.json();
+
+            // Jika respons berhasil
+            if (response.ok) {
+                // Jika tidak ada informasi pemilik atau bukan partner, langsung kembalikan data
+                if (!owner || !isPartner) {
+                    return responseJson;
+                }
+
+                // Jika data bukan array, kembalikan array kosong
+                if (!Array.isArray(responseJson)) {
+                    return [];
+                }
+
+                // Memfilter data berdasarkan pemilik untuk partner
+                return responseJson.filter(data => {
+                    if (isPartner) {
+                        console.log("Memfilter data untuk partner:", {
+                            produk_owner: data?.produk_owner,
+                            owner,
+                        });
+
+                        return data?.produk_owner && data.produk_owner.toLowerCase() == owner.email.toLowerCase();
+                    }
+                    return data;
+                });
+            }
+
+            // Jika respons tidak berhasil, lemparkan error
+            const errorMessage = `HTTP error: ${response.status}`;
+            if (responseJson?.message) {
+                throw new Error(`${errorMessage} : ${responseJson.message}`);
+            }
+            throw new Error(errorMessage);
         } catch (error) {
             // Jika terjadi error maka print error
             console.error("Get reservation error:", error.message);
