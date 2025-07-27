@@ -1,7 +1,7 @@
 @extends('layouts.dashboard-app')
 
 @section('content')
-    <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+    <div class="p-3 mx-auto max-w-(--breakpoint-2xl) md:p-6">
         <!-- Breadcrumb Start -->
         <x-breadcrumb.type-1 :breadcrumbs="[
             ['label' => 'Beranda', 'url' => route('dashboard')],
@@ -11,34 +11,38 @@
         <!-- Breadcrumb End -->
 
         <div class="space-y-5 sm:space-y-6">
-            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-                <div class="px-5 py-4 sm:px-6 sm:py-5">
-                    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
-                        Nama Unit : {{ $product['name'] ?? 'Nama Villa' }}
-                    </h3>
-                    @if (auth()->check() && auth()->user()->isDeveloper())
-                        <div class="flex justify-start space-x-2">
-                            <button type="button"
-                                class="btn-modal-add-event bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-400 transition"
-                                data-modal-target="update-modal-0" data-modal-toggle="update-modal-0">Kelola Unit</button>
-                        </div>
-                    @endif
-                </div>
-                <div class="border-t border-gray-100 dark:border-gray-800">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 py-4 px-5 sm:px-6">
-                        <div>
-                            <div class="rounded-2xl p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:col-span-1 max-w-4xl mx-auto"
-                                data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}" data-owner="{{ auth()->check() ? GetUser()->email : '' }}" data-isPartner="{{ GetUser()->isPartner() }}">
-                                <div class="flatpickr"></div>
+            <div class="m-0 px-4 py-4 sm:py-5">
+                <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+                    Nama Unit : {{ $product['name'] ?? 'Nama Villa' }}
+                </h3>
+                @if (auth()->check() && auth()->user()->isDeveloper())
+                    <div class="flex justify-start space-x-2">
+                        <button type="button"
+                            class="btn-modal-add-event bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-400 transition"
+                            data-modal-target="update-modal-0" data-modal-toggle="update-modal-0">Kelola Unit</button>
+                    </div>
+                @endif
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div>
+                    <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:col-span-1 max-w-4xl mx-auto"
+                        data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}"
+                        data-owner="{{ auth()->check() ? GetUser()->email : '' }}"
+                        data-isPartner="{{ GetUser()->isPartner() }}">
+                        <div class="flatpickr"></div>
 
-                                <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                                    🔴 Full Booking
-                                </p>
-                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                    🟢 Some Booking
-                                </p>
-                            </div>
+                        <div class="flex items-center justify-start px-4 py-2 pb-4 gap-4">
+                            <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                                🔴 Full Booking
+                            </p>
+                            <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                                🟢 Some Booking
+                            </p>
                         </div>
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div class="border-t border-gray-100 dark:border-gray-800">
 
                         <div
                             class="rounded-2xl p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -148,8 +152,8 @@
                                                             stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                     </svg>
                                                 </button>
-                                                <input type="text" id="unit-count" name="unit_count" data-input-counter
-                                                    data-input-counter-min="1"
+                                                <input type="text" id="unit-count" name="unit_count"
+                                                    data-input-counter data-input-counter-min="1"
                                                     data-input-counter-max="{{ $product['unit'] ?? 1 }}"
                                                     aria-describedby="helper-text-explanation"
                                                     class="bg-gray-50 border-x-0 border-gray-300 h-11 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -186,11 +190,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="rounded-2xl m-4 p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-                    <span class="block mb-4 text-gray-500 text-sm dark:text-gray-400">Daftar Reservation</span>
-                    <div class="overflow-x-auto w-full">
-                        <table id="table-events"></table>
-                    </div>
+            </div>
+            <div class="rounded-2xl p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+                <span class="block mb-4 text-gray-500 text-sm dark:text-gray-400">Daftar Reservation</span>
+                <div class="overflow-x-auto w-full">
+                    <table id="table-events"></table>
                 </div>
             </div>
         </div>
