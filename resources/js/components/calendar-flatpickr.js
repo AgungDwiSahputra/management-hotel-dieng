@@ -25,10 +25,17 @@ class VillaCalendar {
         this.produkId = this.calendarWrapper
             .closest("[data-product-id]")
             ?.getAttribute("data-product-id");
-        this.owner = this.calendarWrapper.closest("[data-owner]")
+        this.owner = this.calendarWrapper
+            .closest("[data-owner]")
             ?.getAttribute("data-owner");
-        this.isPartner = this.calendarWrapper.closest("[data-ispartner]")
-            ?.getAttribute("data-ispartner") === "1";
+        this.isPartner =
+            this.calendarWrapper
+                .closest("[data-ispartner]")
+                ?.getAttribute("data-ispartner") === "1";
+        this.isDeveloper =
+            this.calendarWrapper
+                .closest("[data-isdeveloper]")
+                ?.getAttribute("data-isdeveloper") === "1";
         if (!this.apiKey || !this.produkId) {
             console.error("Missing API key or product ID", {
                 apiKey: this.apiKey,
@@ -87,7 +94,11 @@ class VillaCalendar {
         if (!this.calendarWrapper || !this.apiKey || !this.produkId) return;
         this.initializeFlatpickr();
         this.fetchEvents();
-        this.renderEventsForDate(new Date().toISOString().split("T")[0]);
+        this.renderEventsForDate(
+            new Date(new Date().toISOString().split("T")[0]).setDate(
+                new Date().getDate()
+            )
+        );
     }
 
     /**
@@ -114,7 +125,11 @@ class VillaCalendar {
                 // mencari event yang sesuai dengan tanggal yang dipilih
                 const event = this.events.find((e) => e.date === dateStr);
 
-                if (event && event.booking_status && this.statusMap[event.booking_status]) {
+                if (
+                    event &&
+                    event.booking_status &&
+                    this.statusMap[event.booking_status]
+                ) {
                     // menambahkan class css yang sesuai dengan status booking
                     const classes = [
                         this.statusMap[event.booking_status].color,
@@ -125,7 +140,10 @@ class VillaCalendar {
                     ].filter((cls) => cls);
                     dayElem.classList.add(...classes);
                     // menambahkan tooltip yang sesuai dengan status booking
-                    dayElem.title = event.booking_status === "full" ? "Fully Booked" : "Partially Booked";
+                    dayElem.title =
+                        event.booking_status === "full"
+                            ? "Fully Booked"
+                            : "Partially Booked";
                 }
             },
             // fungsi yang akan dijalankan saat tanggal diubah
@@ -134,7 +152,7 @@ class VillaCalendar {
                     // mengambil tanggal yang dipilih
                     const selectedDate = new Date(selectedDates[0]);
                     // menghitung tanggal sebelumnya
-                    selectedDate.setDate(selectedDate.getDate() + 1);
+                    selectedDate.setDate(selectedDate.getDate());
                     // mengubah tanggal ke format YYYY-MM-DD
                     const formattedDate = selectedDate
                         .toISOString()
@@ -150,15 +168,11 @@ class VillaCalendar {
                     const unitPerDate =
                         this.totalUnitPerDate[formattedDate] || 0;
                     // mengatur nilai input unit menjadi nilai default dikurangi nilai unit per tanggal
-                    unitInput.value = defaultValue - unitPerDate;
+                    unitInput.value = Math.max(0, defaultValue - unitPerDate);
                     unitInput.setAttribute("value", unitInput.value);
 
                     // menggambar tabel events untuk tanggal yang dipilih
-                    selectedDate.setDate(selectedDate.getDate() - 1); // mengurangi 1 hari untuk menyesuaikan dengan tanggal yang dipilih
-
-                    this.renderEventsForDate(selectedDate
-                        .toISOString()
-                        .split("T")[0]);
+                    this.renderEventsForDate(formattedDate);
                 }
             },
         });
@@ -171,12 +185,61 @@ class VillaCalendar {
      */
     async renderEventsForDate(date) {
         // menetapkan nilai atribut ke bidang input
-        const [year, month, day] = date.split("-");
-        this.elements.startDateInput.value = `${month}/${day}/${year}`;
-        this.elements.endDateInput.value = `${month}/${day}/${year}`;
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + 1);
+        const formattedDate = [
+            String(newDate.getMonth() + 1).padStart(2, "0"),
+            String(newDate.getDate()).padStart(2, "0"),
+            newDate.getFullYear(),
+        ].join("/");
+        this.elements.startDateInput.value = formattedDate;
+        this.elements.endDateInput.value = formattedDate;
 
         // mengambil data reservasi berdasarkan tanggal yang dipilih
-        const reservations = await this.getReservationByDate(date, this.produkId);
+        const reservations = await this.getReservationByDate(
+            date,
+            this.produkId
+        );
+
+        // menambahkan tombol Approve All dan Reject All jika ada data reservasi
+        if (this.isDeveloper) {
+            if (reservations.length > 0) {
+                const buttonsContainer =
+                    document.getElementById("helper-all-approve");
+                buttonsContainer.innerHTML = "";
+
+                const approveAllButton = document.createElement("button");
+                approveAllButton.className =
+                    "flex items-center gap-1 ms-auto rounded-full px-3 py-1.5 border border-blue-500 bg-blue-500 dark:bg-blue-700 text-theme-sm font-medium text-white hover:bg-blue-600 dark:hover:bg-blue-800 transition duration-300 shadow-sm";
+                approveAllButton.innerHTML = "<span>Approve All</span>";
+                approveAllButton.onclick = () =>
+                    showConfirmationSwal(
+                        "Menyetujui Semua Pemesanan ?",
+                        "Anda yakin ingin menyetujui semua pemesanan ini ?",
+                        "warning",
+                        () => approveAllReservation(this.produkId, date)
+                    );
+                buttonsContainer.appendChild(approveAllButton);
+
+                const rejectAllButton = document.createElement("button");
+                rejectAllButton.className =
+                    "flex items-center gap-1 ms-auto rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm";
+                rejectAllButton.innerHTML = "<span>Reject All</span>";
+                rejectAllButton.onclick = () =>
+                    showConfirmationSwal(
+                        "Menolak Semua Pemesanan ?",
+                        "Anda yakin ingin menolak semua pemesanan ini ?",
+                        "warning",
+                        () => rejectAllReservation(this.produkId, date)
+                    );
+                buttonsContainer.appendChild(rejectAllButton);
+            } else {
+                const buttonsContainer =
+                    document.getElementById("helper-all-approve");
+                buttonsContainer.innerHTML = "";
+            }
+        }
+
         const table = document.getElementById("table-events");
         if (!table) return;
 
@@ -197,13 +260,16 @@ class VillaCalendar {
         const headerRow = document.createElement("tr");
         headerRow.className =
             "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400";
-        const headers = [
-            "No",
-            "Nama Pemesan",
-            "Nama Unit",
-            "Jumlah Unit",
-            "Status",
-        ];
+        const headers = this.isDeveloper
+            ? [
+                  "No",
+                  "Nama Pemesan",
+                  "Nama Unit",
+                  "Jumlah Unit",
+                  "Status",
+                  "Aksi",
+              ]
+            : ["No", "Nama Pemesan", "Nama Unit", "Jumlah Unit", "Status"];
         headers.forEach((header) => {
             const th = document.createElement("th");
             th.textContent = header;
@@ -259,6 +325,26 @@ class VillaCalendar {
                         ${res.status}
                     </span>
                 </td>
+                ${
+                    this.isDeveloper
+                        ? `
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button
+                            onclick="showConfirmationSwal('Menyetujui Pemesanan ?', 'Anda yakin ingin menyetujui pemesanan ini ?', 'warning', () => approveReservation('${res.id}'))"
+                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
+                            <span>Approve</span>
+                        </button>
+                        <button
+                            onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('${res.id}'))"
+                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
+                            <span>Reject</span>
+                        </button>
+                    </div>
+                </td>
+                `
+                        : ""
+                }
             `;
             tbody.appendChild(row);
         });
@@ -311,28 +397,35 @@ class VillaCalendar {
             // Membuat object yang berisi data ketersediaan produk untuk setiap tanggal
             const dateMap = {};
             data.forEach((event) => {
-                if (!dateMap[event.date]) {
-                    dateMap[event.date] = {
-                        // Inisialisasi unit dan ids untuk setiap tanggal
-                        ...event,
-                        unit: 0,
-                        ids: [],
-                    };
+                if (event.status !== "REJECTED") {
+                    if (!dateMap[event.date]) {
+                        dateMap[event.date] = {
+                            // Inisialisasi unit dan ids untuk setiap tanggal
+                            ...event,
+                            unit: 0,
+                            ids: [],
+                        };
+                    }
+                    // Menambahkan unit dan ids untuk setiap tanggal
+                    dateMap[event.date].unit += Number(event.unit);
+                    dateMap[event.date].ids.push(event.id);
                 }
-                // Menambahkan unit dan ids untuk setiap tanggal
-                dateMap[event.date].unit += Number(event.unit);
-                dateMap[event.date].ids.push(event.id);
             });
 
             // Mengatur status booking untuk setiap tanggal
             this.events = Object.values(dateMap).map((event) => {
-                let bookingStatus = "none";
-                if (event.unit >= event.product_unit) {
-                    bookingStatus = "full";
-                } else if (event.unit > 0 && event.unit < event.product_unit) {
-                    bookingStatus = "some";
+                if (event.status !== "REJECTED") {
+                    let bookingStatus = "none";
+                    if (event.unit >= event.product_unit) {
+                        bookingStatus = "full";
+                    } else if (
+                        event.unit > 0 &&
+                        event.unit < event.product_unit
+                    ) {
+                        bookingStatus = "some";
+                    }
+                    return { ...event, booking_status: bookingStatus };
                 }
-                return { ...event, booking_status: bookingStatus };
             });
 
             // Jika flatpickr instance tidak null maka jump ke tanggal yang dipilih

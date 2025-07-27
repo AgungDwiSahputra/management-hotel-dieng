@@ -28,7 +28,8 @@
                     <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:col-span-1 max-w-4xl mx-auto"
                         data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}"
                         data-owner="{{ auth()->check() ? GetUser()->email : '' }}"
-                        data-isPartner="{{ GetUser()->isPartner() }}">
+                        data-isPartner="{{ GetUser()->isPartner() }}"
+                        data-isDeveloper="{{ GetUser()->isDeveloper() }}">
                         <div class="flatpickr"></div>
 
                         <div class="flex items-center justify-start px-4 py-2 pb-4 gap-4">
@@ -192,7 +193,10 @@
                 </div>
             </div>
             <div class="rounded-2xl p-4 border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-                <span class="block mb-4 text-gray-500 text-sm dark:text-gray-400">Daftar Reservation</span>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="block mb-4 text-gray-500 text-sm dark:text-gray-400">Daftar Reservation</span>
+                    <div id="helper-all-approve" class="flex items-center justify-end gap-1"></div>
+                </div>
                 <div class="overflow-x-auto w-full">
                     <table id="table-events"></table>
                 </div>
@@ -225,4 +229,102 @@
             });
         </script>
     @endif
+
+    <script>
+        function approveAllReservation(productId, date) {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${productId}/${date}/acceptAll`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccessSwal('Berhasil', data.message);
+                    console.log('Success:', data.message);
+                })
+                .catch(error => {
+                    showSuccessSwal('Gagal', error);
+                    console.error('Error:', error);
+                });
+        }
+
+        function rejectAllReservation(productId, date) {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${productId}/${date}/rejectAll`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccessSwal('Berhasil', data.message);
+                    console.log('Success:', data.message);
+                })
+                .catch(error => {
+                    showSuccessSwal('Gagal', error);
+                    console.error('Error:', error);
+                });
+        }
+
+        function approveReservation(id) {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${id}/accept`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccessSwal('Berhasil', data.message);
+                    console.log('Success:', data.message);
+                })
+                .catch(error => {
+                    showSuccessSwal('Gagal', error);
+                    console.error('Error:', error);
+                });
+        }
+
+        function rejectReservation(id) {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${id}/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccessSwal('Berhasil', data.message);
+                    console.log('Success:', data.message);
+                })
+                .catch(error => {
+                    showSuccessSwal('Gagal', error.message);
+                    console.error('Error:', error.message);
+                });
+        }
+    </script>
 @endpush

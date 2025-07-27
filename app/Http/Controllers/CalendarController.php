@@ -128,18 +128,20 @@ class CalendarController extends Controller
         // Hitung total unit berdasarkan date
         $totalUnitPerDate = [];
         foreach ($availability as $item) {
-            $date = $item['date'];
-            if (!isset($totalUnitPerDate[$date])) {
-                $totalUnitPerDate[$date] = 0;
+            if($item['status'] != 'REJECTED') {
+                $date = $item['date'];
+                if (!isset($totalUnitPerDate[$date])) {
+                    $totalUnitPerDate[$date] = 0;
+                }
+                $totalUnitPerDate[$date] += $item['unit'];
             }
-            $totalUnitPerDate[$date] += $item['unit'];
         }
 
         return view('calendar.show', [
             'title' => 'Ketersediaan Detail',
             'description' => 'Halaman untuk mengelola Tanggal Reservasi',
             'product'=> $product,
-            // 'availability' => $availability,
+            'availability' => $availability,
             'totalUnitPerDate' => $totalUnitPerDate,
         ]);
     }
