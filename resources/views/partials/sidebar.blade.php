@@ -85,7 +85,7 @@
                     <!-- Menu Item Product -->
 
                     <!-- Menu Item Tambah Partner -->
-                    @if (auth()->check() && auth()->user()->isAdmin())
+                    @if (auth()->check() && auth()->user()->isDeveloper())
                         <li>
                             <a href="{{ route('partner.index') }}"
                                 class="menu-item group {{ isCurrentRoute('partner') ? 'menu-item-active' : 'menu-item-inactive' }}">

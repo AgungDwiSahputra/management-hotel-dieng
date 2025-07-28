@@ -12,13 +12,19 @@ class CalendarController extends Controller
     public function index()
     {
         $products = getAllProducts() ?? [];
+        $reservations = getAllReservations() ?? [];
 
-        $products = array_map(function ($product) {
+        $products = array_map(function ($product) use ($reservations) {
+            $totalReservations = count(array_filter($reservations, function ($reservation) use ($product) {
+                return $reservation['produk_id'] == $product['id'];
+            }));
+
             if(GetUser()->isPartner()) {
                 return [
                     'id' => $product['id'],
                     'name' => $product['name'],
                     'unit' => $product['unit'],
+                    'total_reservations' => $totalReservations,
                 ];
             }else {
                 return [
@@ -27,6 +33,7 @@ class CalendarController extends Controller
                     'unit' => $product['unit'],
                     'harga_weekday' => $product['harga_weekday'],
                     'harga_weekend' => $product['harga_weekend'],
+                    'total_reservations' => $totalReservations,
                 ];
             }
         }, $products);
@@ -80,6 +87,13 @@ class CalendarController extends Controller
         $startDate = new \DateTime($requestData['start_date']);
         $endDate = new \DateTime($requestData['end_date']);
         $night = $startDate->diff($endDate)->days;
+
+        // handle jika startDate lebih besar dari endDate
+        if ($startDate > $endDate) {
+            return redirect()->back()->withErrors([
+                'error' => 'Tanggal awal harus lebih kecil dari tanggal akhir.',
+            ]);
+        }
 
         // Hitung total harga
         $total = 0;

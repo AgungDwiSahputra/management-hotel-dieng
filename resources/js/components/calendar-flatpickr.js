@@ -98,11 +98,7 @@ class VillaCalendar {
         if (!this.calendarWrapper || !this.apiKey || !this.produkId) return;
         this.initializeFlatpickr();
         this.fetchEvents();
-        this.renderEventsForDate(
-            new Date(new Date().toISOString().split("T")[0]).setDate(
-                new Date().getDate()
-            )
-        );
+        this.renderEventsForDate(new Date().toISOString().split("T")[0]);
     }
 
     /**
@@ -123,7 +119,7 @@ class VillaCalendar {
                 let dateStr = dayElem.dateObj.toISOString().split("T")[0];
                 // menghitung tanggal sebelumnya
                 const previousDate = new Date(dayElem.dateObj);
-                previousDate.setDate(previousDate.getDate());
+                previousDate.setDate(previousDate.getDate() + 1);
                 // mengubah tanggal ke format YYYY-MM-DD
                 dateStr = previousDate.toISOString().split("T")[0];
                 // mencari event yang sesuai dengan tanggal yang dipilih
@@ -156,7 +152,7 @@ class VillaCalendar {
                     // mengambil tanggal yang dipilih
                     const selectedDate = new Date(selectedDates[0]);
                     // menghitung tanggal sebelumnya
-                    selectedDate.setDate(selectedDate.getDate());
+                    selectedDate.setDate(selectedDate.getDate() + 1);
                     // mengubah tanggal ke format YYYY-MM-DD
                     const formattedDate = selectedDate
                         .toISOString()
@@ -189,15 +185,9 @@ class VillaCalendar {
      */
     async renderEventsForDate(date) {
         // menetapkan nilai atribut ke bidang input
-        const newDate = new Date(date);
-        newDate.setDate(newDate.getDate() + 1);
-        const formattedDate = [
-            String(newDate.getMonth() + 1).padStart(2, "0"),
-            String(newDate.getDate()).padStart(2, "0"),
-            newDate.getFullYear(),
-        ].join("/");
-        this.elements.startDateInput.value = formattedDate;
-        this.elements.endDateInput.value = formattedDate;
+        const [year, month, day] = date.split("-");
+        this.elements.startDateInput.value = `${month}/${day}/${year}`;
+        this.elements.endDateInput.value = `${month}/${day}/${year}`;
 
         // mengambil data reservasi berdasarkan tanggal yang dipilih
         const reservations = await this.getReservationByDate(
