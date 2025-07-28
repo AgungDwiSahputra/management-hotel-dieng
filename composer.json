@@ -34,7 +34,8 @@
             "app/Helpers/Route.php",
             "app/Helpers/CreateLink.php",
             "app/Helpers/FetchAPI.php",
-            "app/Helpers/Users.php"
+            "app/Helpers/Users.php",
+            "app/Helpers/Reservation.php"
         ]
     },
     "autoload-dev": {
