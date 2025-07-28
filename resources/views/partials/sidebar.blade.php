@@ -119,7 +119,7 @@
                     </li>
                     <!-- Menu Item Calendar -->
 
-                    <!-- Menu Item Reservation -->
+                    {{-- <!-- Menu Item Reservation -->
                     @if (auth()->check() && (auth()->user()->isDeveloper() || auth()->user()->isPartner()))
                         <li>
                             <a href="{{ route('reservation.index') }}"
@@ -138,7 +138,7 @@
                             </a>
                         </li>
                     @endif
-                    <!-- Menu Item Reservation -->
+                    <!-- Menu Item Reservation --> --}}
 
                 </ul>
             </div>
