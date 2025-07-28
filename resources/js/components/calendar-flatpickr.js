@@ -36,6 +36,10 @@ class VillaCalendar {
             this.calendarWrapper
                 .closest("[data-isdeveloper]")
                 ?.getAttribute("data-isdeveloper") === "1";
+        this.isAdmin =
+            this.calendarWrapper
+                .closest("[data-isadmin]")
+                ?.getAttribute("data-isadmin") === "1";
         if (!this.apiKey || !this.produkId) {
             console.error("Missing API key or product ID", {
                 apiKey: this.apiKey,
@@ -202,7 +206,7 @@ class VillaCalendar {
         );
 
         // menambahkan tombol Approve All dan Reject All jika ada data reservasi
-        if (this.isDeveloper) {
+        if (!this.isAdmin) {
             if (reservations.length > 0) {
                 const buttonsContainer =
                     document.getElementById("helper-all-approve");
@@ -260,7 +264,7 @@ class VillaCalendar {
         const headerRow = document.createElement("tr");
         headerRow.className =
             "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400";
-        const headers = this.isDeveloper
+        const headers = !this.isAdmin
             ? [
                   "No",
                   "Nama Pemesan",
@@ -326,7 +330,7 @@ class VillaCalendar {
                     </span>
                 </td>
                 ${
-                    this.isDeveloper
+                    !this.isAdmin
                         ? `
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-2">

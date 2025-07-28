@@ -29,7 +29,8 @@
                         data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}"
                         data-owner="{{ auth()->check() ? GetUser()->email : '' }}"
                         data-isPartner="{{ GetUser()->isPartner() }}"
-                        data-isDeveloper="{{ GetUser()->isDeveloper() }}">
+                        data-isDeveloper="{{ GetUser()->isDeveloper() }}"
+                        data-isAdmin="{{ GetUser()->isAdmin() }}">
                         <div class="flatpickr"></div>
 
                         <div class="flex items-center justify-start px-4 py-2 pb-4 gap-4">
