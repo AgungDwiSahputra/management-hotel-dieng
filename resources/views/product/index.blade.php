@@ -7,7 +7,7 @@
         <!-- Breadcrumb End -->
 
         <!-- Alert -->
-                <x-alert.alert-1 :success="session('success')" :error="session('error')" />
+        <x-alert.alert-1 :success="session('success')" :error="session('error')" />
 
         <div class="space-y-5 sm:space-y-6">
             <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">

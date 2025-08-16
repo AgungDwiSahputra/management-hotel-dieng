@@ -92,7 +92,7 @@ class ProductController extends Controller
         $product = FetchAPIPost(env('URL_API') . '/api/v1/products', $datas);
 
         if (isset($product['error'])) {
-            return response()->json(['error' => $product['error']], 400);
+            return back()->withInput()->with(['error' => $product['error']]);
         }
 
         return redirect()->route('product.index')->with([

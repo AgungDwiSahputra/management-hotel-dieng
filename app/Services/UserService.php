@@ -63,6 +63,8 @@ class UserService {
   public function deletePartner($id): bool
   {
     $user = $this->getPartnerById($id);
+
+    $product = FetchAPIDelete(env('URL_API') . '/api/v1/product/owner/' . $user->email);
     if (!$user) {
         throw new \Exception('Partner not found');
     }
