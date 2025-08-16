@@ -16,6 +16,7 @@
         "spatie/laravel-permission": "^6.20"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.16",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
@@ -34,7 +35,8 @@
             "app/Helpers/Route.php",
             "app/Helpers/CreateLink.php",
             "app/Helpers/FetchAPI.php",
-            "app/Helpers/Users.php"
+            "app/Helpers/Users.php",
+            "app/Helpers/Reservation.php"
         ]
     },
     "autoload-dev": {

@@ -25,6 +25,21 @@ class VillaCalendar {
         this.produkId = this.calendarWrapper
             .closest("[data-product-id]")
             ?.getAttribute("data-product-id");
+        this.owner = this.calendarWrapper
+            .closest("[data-owner]")
+            ?.getAttribute("data-owner");
+        this.isPartner =
+            this.calendarWrapper
+                .closest("[data-ispartner]")
+                ?.getAttribute("data-ispartner") === "1";
+        this.isDeveloper =
+            this.calendarWrapper
+                .closest("[data-isdeveloper]")
+                ?.getAttribute("data-isdeveloper") === "1";
+        this.isAdmin =
+            this.calendarWrapper
+                .closest("[data-isadmin]")
+                ?.getAttribute("data-isadmin") === "1";
         if (!this.apiKey || !this.produkId) {
             console.error("Missing API key or product ID", {
                 apiKey: this.apiKey,
@@ -110,7 +125,11 @@ class VillaCalendar {
                 // mencari event yang sesuai dengan tanggal yang dipilih
                 const event = this.events.find((e) => e.date === dateStr);
 
-                if (event && event.booking_status && this.statusMap[event.booking_status]) {
+                if (
+                    event &&
+                    event.booking_status &&
+                    this.statusMap[event.booking_status]
+                ) {
                     // menambahkan class css yang sesuai dengan status booking
                     const classes = [
                         this.statusMap[event.booking_status].color,
@@ -121,7 +140,10 @@ class VillaCalendar {
                     ].filter((cls) => cls);
                     dayElem.classList.add(...classes);
                     // menambahkan tooltip yang sesuai dengan status booking
-                    dayElem.title = event.booking_status === "full" ? "Fully Booked" : "Partially Booked";
+                    dayElem.title =
+                        event.booking_status === "full"
+                            ? "Fully Booked"
+                            : "Partially Booked";
                 }
             },
             // fungsi yang akan dijalankan saat tanggal diubah
@@ -132,16 +154,21 @@ class VillaCalendar {
                     // menghitung tanggal sebelumnya
                     selectedDate.setDate(selectedDate.getDate() + 1);
                     // mengubah tanggal ke format YYYY-MM-DD
-                    const formattedDate = selectedDate.toISOString().split("T")[0];
+                    const formattedDate = selectedDate
+                        .toISOString()
+                        .split("T")[0];
 
                     // mengambil input unit
                     const unitInput = document.querySelector("#unit");
                     // mengambil nilai default dari input unit
-                    const defaultValue = Number(unitInput.getAttribute("default-value") || 0);
+                    const defaultValue = Number(
+                        unitInput.getAttribute("default-value") || 0
+                    );
                     // mengambil nilai unit per tanggal yang sesuai
-                    const unitPerDate = this.totalUnitPerDate[formattedDate] || 0;
+                    const unitPerDate =
+                        this.totalUnitPerDate[formattedDate] || 0;
                     // mengatur nilai input unit menjadi nilai default dikurangi nilai unit per tanggal
-                    unitInput.value = defaultValue - unitPerDate;
+                    unitInput.value = Math.max(0, defaultValue - unitPerDate);
                     unitInput.setAttribute("value", unitInput.value);
 
                     // menggambar tabel events untuk tanggal yang dipilih
@@ -163,15 +190,61 @@ class VillaCalendar {
         this.elements.endDateInput.value = `${month}/${day}/${year}`;
 
         // mengambil data reservasi berdasarkan tanggal yang dipilih
-        const reservations = await this.getReservationByDate(date);
+        const reservations = await this.getReservationByDate(
+            date,
+            this.produkId
+        );
+
+        // menambahkan tombol Approve All dan Reject All jika ada data reservasi
+        if (!this.isAdmin) {
+            if (reservations.length > 0) {
+                const buttonsContainer =
+                    document.getElementById("helper-all-approve");
+                buttonsContainer.innerHTML = "";
+
+                const approveAllButton = document.createElement("button");
+                approveAllButton.className =
+                    "flex items-center gap-1 ms-auto rounded-full px-3 py-1.5 border border-blue-500 bg-blue-500 dark:bg-blue-700 text-theme-sm font-medium text-white hover:bg-blue-600 dark:hover:bg-blue-800 transition duration-300 shadow-sm";
+                approveAllButton.innerHTML = "<span>Approve All</span>";
+                approveAllButton.onclick = () =>
+                    showConfirmationSwal(
+                        "Menyetujui Semua Pemesanan ?",
+                        "Anda yakin ingin menyetujui semua pemesanan ini ?",
+                        "warning",
+                        () => approveAllReservation(this.produkId, date)
+                    );
+                buttonsContainer.appendChild(approveAllButton);
+
+                const rejectAllButton = document.createElement("button");
+                rejectAllButton.className =
+                    "flex items-center gap-1 ms-auto rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm";
+                rejectAllButton.innerHTML = "<span>Reject All</span>";
+                rejectAllButton.onclick = () =>
+                    showConfirmationSwal(
+                        "Menolak Semua Pemesanan ?",
+                        "Anda yakin ingin menolak semua pemesanan ini ?",
+                        "warning",
+                        () => rejectAllReservation(this.produkId, date)
+                    );
+                buttonsContainer.appendChild(rejectAllButton);
+            } else {
+                const buttonsContainer =
+                    document.getElementById("helper-all-approve");
+                buttonsContainer.innerHTML = "";
+            }
+        }
+
         const table = document.getElementById("table-events");
         if (!table) return;
 
         // mengatur class untuk tabel
-        table.className = "w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400";
+        table.className =
+            "w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400";
 
-        const tbody = table.querySelector("tbody") || document.createElement("tbody");
-        const thead = table.querySelector("thead") || document.createElement("thead");
+        const tbody =
+            table.querySelector("tbody") || document.createElement("tbody");
+        const thead =
+            table.querySelector("thead") || document.createElement("thead");
         table.appendChild(tbody);
         table.appendChild(thead);
         tbody.innerHTML = "";
@@ -179,8 +252,18 @@ class VillaCalendar {
 
         // membuat baris header
         const headerRow = document.createElement("tr");
-        headerRow.className = "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400";
-        const headers = ["No", "ID", "Transaksi ID", "Unit", "Status"];
+        headerRow.className =
+            "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400";
+        const headers = !this.isAdmin
+            ? [
+                  "No",
+                  "Nama Pemesan",
+                  "Nama Unit",
+                  "Jumlah Unit",
+                  "Status",
+                  "Aksi",
+              ]
+            : ["No", "Nama Pemesan", "Nama Unit", "Jumlah Unit", "Status"];
         headers.forEach((header) => {
             const th = document.createElement("th");
             th.textContent = header;
@@ -204,28 +287,58 @@ class VillaCalendar {
         // menggambar tabel berdasarkan data reservasi
         reservations.forEach((res, idx) => {
             const row = document.createElement("tr");
-            row.className = "odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200";
+            row.className =
+                "odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200";
 
-            const idShort = typeof res.id === "string" ? res.id.substring(0, 2).toUpperCase() : "";
+            // const idShort = typeof res.id === "string" ? res.id.substring(0, 2).toUpperCase() : "";
 
             row.innerHTML = `
-                <td class="px-6 py-4">${idx + 1}</td>
-                <td class="px-6 py-4">${idShort}</td>
                 <td class="px-6 py-4">
-                    <a href="${res.transaksi_id ? `/reservation/${res.transaksi_id}` : "#"}" class="text-blue-600 dark:text-blue-500 hover:underline">
-                        ${res.transaksi_id || ""}
+                    <a href="${
+                        res.transaksi_id
+                            ? `/reservation/${res.transaksi_id}`
+                            : "#"
+                    }" class="text-blue-600 dark:text-blue-500 hover:underline">
+                        ${idx + 1}
                     </a>
                 </td>
+                <td class="px-6 py-4">${res.name}</td>
+                <td class="px-6 py-4">${res.produk_name}</td>
                 <td class="px-6 py-4">${res.unit}</td>
                 <td class="px-6 py-4">
                     <span class="rounded-full px-2 py-0.5 text-theme-xs font-medium
-                        ${res.status === 'PENDING' ? 'bg-yellow-50 text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-500' 
-                        : res.status === 'APPROVED' ? 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-500' 
-                        : res.status === 'REJECTED' ? 'bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-500' 
-                        : ''}">
+                        ${
+                            res.status === "PENDING"
+                                ? "bg-yellow-50 text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-500"
+                                : res.status === "APPROVED"
+                                ? "bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-500"
+                                : res.status === "REJECTED"
+                                ? "bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-500"
+                                : ""
+                        }">
                         ${res.status}
                     </span>
                 </td>
+                ${
+                    !this.isAdmin
+                        ? `
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button
+                            onclick="showConfirmationSwal('Menyetujui Pemesanan ?', 'Anda yakin ingin menyetujui pemesanan ini ?', 'warning', () => approveReservation('${res.id}'))"
+                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
+                            <span>Approve</span>
+                        </button>
+                        <button
+                            onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('${res.id}'))"
+                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
+                            <span>Reject</span>
+                        </button>
+                    </div>
+                </td>
+                `
+                        : ""
+                }
             `;
             tbody.appendChild(row);
         });
@@ -263,7 +376,9 @@ class VillaCalendar {
             if (!response.ok) {
                 // Mengambil pesan error dari server
                 const errorText = await response.text();
-                throw new Error(`HTTP error: ${response.status} - ${errorText}`);
+                throw new Error(
+                    `HTTP error: ${response.status} - ${errorText}`
+                );
             }
 
             // Mengambil data dari server
@@ -276,28 +391,35 @@ class VillaCalendar {
             // Membuat object yang berisi data ketersediaan produk untuk setiap tanggal
             const dateMap = {};
             data.forEach((event) => {
-                if (!dateMap[event.date]) {
-                    dateMap[event.date] = {
-                        // Inisialisasi unit dan ids untuk setiap tanggal
-                        ...event,
-                        unit: 0,
-                        ids: [],
-                    };
+                if (event.status !== "REJECTED") {
+                    if (!dateMap[event.date]) {
+                        dateMap[event.date] = {
+                            // Inisialisasi unit dan ids untuk setiap tanggal
+                            ...event,
+                            unit: 0,
+                            ids: [],
+                        };
+                    }
+                    // Menambahkan unit dan ids untuk setiap tanggal
+                    dateMap[event.date].unit += Number(event.unit);
+                    dateMap[event.date].ids.push(event.id);
                 }
-                // Menambahkan unit dan ids untuk setiap tanggal
-                dateMap[event.date].unit += Number(event.unit);
-                dateMap[event.date].ids.push(event.id);
             });
 
             // Mengatur status booking untuk setiap tanggal
             this.events = Object.values(dateMap).map((event) => {
-                let bookingStatus = "none";
-                if (event.unit >= event.product_unit) {
-                    bookingStatus = "full";
-                } else if (event.unit > 0 && event.unit < event.product_unit) {
-                    bookingStatus = "some";
+                if (event.status !== "REJECTED") {
+                    let bookingStatus = "none";
+                    if (event.unit >= event.product_unit) {
+                        bookingStatus = "full";
+                    } else if (
+                        event.unit > 0 &&
+                        event.unit < event.product_unit
+                    ) {
+                        bookingStatus = "some";
+                    }
+                    return { ...event, booking_status: bookingStatus };
                 }
-                return { ...event, booking_status: bookingStatus };
             });
 
             // Jika flatpickr instance tidak null maka jump ke tanggal yang dipilih
@@ -314,7 +436,10 @@ class VillaCalendar {
             // Jika jumlah percobaan kurang dari maxAttempts maka ulangi
             if (attempt < maxAttempts) {
                 // Ulangi fetchEvents dengan menambahkan 1 ke attempt
-                return setTimeout(() => this.fetchEvents(attempt + 1, maxAttempts), 1000);
+                return setTimeout(
+                    () => this.fetchEvents(attempt + 1, maxAttempts),
+                    1000
+                );
             }
         }
     }
@@ -324,12 +449,12 @@ class VillaCalendar {
      * @param {string} date Format tanggal YYYY-MM-DD
      * @returns {Promise<Array<Object>>} Data reservasi
      */
-    async getReservationByDate(date) {
+    async getReservationByDate(date, productId = this.produkId) {
         try {
             // Fetch data reservasi berdasarkan tanggal
             const response = await fetch(
                 // URL API untuk mengambil data reservasi berdasarkan tanggal
-                `https://villahoteldieng.com/api/v1/reservations/by-date/${date}`,
+                `https://villahoteldieng.com/api/v1/reservations/by-date/${date}/${productId}`,
                 {
                     // Method GET
                     method: "GET",
@@ -340,10 +465,42 @@ class VillaCalendar {
                     },
                 }
             );
-            // Jika response tidak OK maka throw error
-            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-            // Return data reservasi dalam bentuk array of object
-            return await response.json();
+            // Mendapatkan informasi pemilik dan status kemitraan
+            const owner = this.owner
+                ? { email: this.owner.toLowerCase() }
+                : null;
+            const isPartner = this.isPartner;
+            const responseJson = await response.json();
+
+            // Jika respons berhasil
+            if (response.ok) {
+                // Jika tidak ada informasi pemilik atau bukan partner, langsung kembalikan data
+                if (owner == null || !isPartner) {
+                    return responseJson;
+                }
+
+                // Jika data bukan array, kembalikan array kosong
+                if (!Array.isArray(responseJson)) {
+                    return [];
+                }
+
+                // Memfilter data berdasarkan pemilik untuk partner
+                return responseJson.filter((data) => {
+                    return (
+                        data?.produk_owner &&
+                        data.produk_owner.toLowerCase() ==
+                            owner.email.toLowerCase()
+                    );
+                    return data;
+                });
+            }
+
+            // Jika respons tidak berhasil, lemparkan error
+            const errorMessage = `HTTP error: ${response.status}`;
+            if (responseJson?.message) {
+                throw new Error(`${errorMessage} : ${responseJson.message}`);
+            }
+            throw new Error(errorMessage);
         } catch (error) {
             // Jika terjadi error maka print error
             console.error("Get reservation error:", error.message);

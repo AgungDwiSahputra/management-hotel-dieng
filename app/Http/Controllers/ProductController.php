@@ -15,13 +15,21 @@ class ProductController extends Controller
 
         // filter data array product hanya 'name, unit, harga_weekday, harga_weekend'
         $products = array_map(function ($product) {
-            return [
-                'id' => $product['id'],
-                'name' => $product['name'],
-                'unit' => $product['unit'],
-                'harga_weekday' => $product['harga_weekday'],
-                'harga_weekend' => $product['harga_weekend'],
-            ];
+            if(GetUser()->isPartner()) {
+                return [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'unit' => $product['unit'],
+                ];
+            }else {
+                return [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'unit' => $product['unit'],
+                    'harga_weekday' => $product['harga_weekday'],
+                    'harga_weekend' => $product['harga_weekend'],
+                ];
+            }
         }, $products);
 
         return view('product.index', [
@@ -84,7 +92,7 @@ class ProductController extends Controller
         $product = FetchAPIPost(env('URL_API') . '/api/v1/products', $datas);
 
         if (isset($product['error'])) {
-            return response()->json(['error' => $product['error']], 400);
+            return back()->withInput()->with(['error' => $product['error']]);
         }
 
         return redirect()->route('product.index')->with([

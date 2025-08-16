@@ -105,6 +105,8 @@ if (!function_exists('getAllReservations')) {
     {
         $response = FetchAPI(env('URL_API') . '/api/v1/reservations');
         $response = filterByOwner($response, 'produk_owner', GetUser());
+        // filter reservations selain status rejected
+        $response = filterReservationNotRejected($response);
 
         return $response;
     }

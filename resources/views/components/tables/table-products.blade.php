@@ -8,6 +8,7 @@
             'name' => '1 Kamar Best View Lantai 3',
             'slug' => '1-kamar-best-view-lantai-3',
             'unit' => 1,
+            'total_reservations' => 0,
             'kamar' => 1,
             'orang' => 4,
             'maks_orang' => 6,
@@ -96,6 +97,11 @@
                             <td class="px-5 py-4 sm:px-6">
                                 <span
                                     class="text-gray-500 text-theme-sm dark:text-gray-400">Rp{{ number_format($row['harga_weekend'], 0, ',', '.') }}</span>
+                            </td>
+                        @endisset
+                        @isset($row['total_reservations'])
+                            <td class="px-5 py-4 sm:px-6">
+                                <span class="text-gray-700 dark:text-gray-300 font-semibold">{{ $row['total_reservations'] }}</span>
                             </td>
                         @endisset
                         @isset($row['created_at'])

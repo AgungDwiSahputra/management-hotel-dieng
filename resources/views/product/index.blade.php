@@ -7,7 +7,7 @@
         <!-- Breadcrumb End -->
 
         <!-- Alert -->
-                <x-alert.alert-1 :success="session('success')" :error="session('error')" />
+        <x-alert.alert-1 :success="session('success')" :error="session('error')" />
 
         <div class="space-y-5 sm:space-y-6">
             <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -26,7 +26,7 @@
                 <div class="border-t border-gray-100 dark:border-gray-800">
                     <!-- ====== Table Six Start -->
                     <x-tables.table-products 
-                        :headers="['ID', 'Nama', 'Unit', 'Harga Weekday', 'Harga Weekend', 'Aksi']" 
+                        :headers="(GetUser()->isPartner() ? ['ID', 'Nama', 'Unit', 'Aksi'] : ['ID', 'Nama', 'Unit', 'Harga Weekday', 'Harga Weekend', 'Aksi'])" 
                         :rows="$products" 
                         :btnAction="[
                             [

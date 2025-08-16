@@ -170,7 +170,7 @@ class PartnerController extends Controller
             ]);
         }
         return redirect()->route('partner.index')->with([
-            'success' => 'Unit produk berhasil dihapus',
+            'success' => 'Partner berhasil dihapus',
         ]);
     }
 }

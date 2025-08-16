@@ -12,15 +12,30 @@ class CalendarController extends Controller
     public function index()
     {
         $products = getAllProducts() ?? [];
+        $reservations = getAllReservations() ?? [];
 
-        $products = array_map(function ($product) {
-            return [
-                'id' => $product['id'],
-                'name' => $product['name'],
-                'unit' => $product['unit'],
-                'harga_weekday' => $product['harga_weekday'],
-                'harga_weekend' => $product['harga_weekend'],
-            ];
+        $products = array_map(function ($product) use ($reservations) {
+            $totalReservations = count(array_filter($reservations, function ($reservation) use ($product) {
+                return $reservation['produk_id'] == $product['id'];
+            }));
+
+            if(GetUser()->isPartner()) {
+                return [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'unit' => $product['unit'],
+                    'total_reservations' => $totalReservations,
+                ];
+            }else {
+                return [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'unit' => $product['unit'],
+                    'harga_weekday' => $product['harga_weekday'],
+                    'harga_weekend' => $product['harga_weekend'],
+                    'total_reservations' => $totalReservations,
+                ];
+            }
         }, $products);
 
         return view('calendar.index', [
@@ -73,6 +88,13 @@ class CalendarController extends Controller
         $endDate = new \DateTime($requestData['end_date']);
         $night = $startDate->diff($endDate)->days;
 
+        // handle jika startDate lebih besar dari endDate
+        if ($startDate > $endDate) {
+            return redirect()->back()->withErrors([
+                'error' => 'Tanggal awal harus lebih kecil dari tanggal akhir.',
+            ]);
+        }
+
         // Hitung total harga
         $total = 0;
         for ($date = $startDate; $date <= $endDate; $date->modify('+1 day')) {
@@ -120,18 +142,20 @@ class CalendarController extends Controller
         // Hitung total unit berdasarkan date
         $totalUnitPerDate = [];
         foreach ($availability as $item) {
-            $date = $item['date'];
-            if (!isset($totalUnitPerDate[$date])) {
-                $totalUnitPerDate[$date] = 0;
+            if($item['status'] != 'REJECTED') {
+                $date = $item['date'];
+                if (!isset($totalUnitPerDate[$date])) {
+                    $totalUnitPerDate[$date] = 0;
+                }
+                $totalUnitPerDate[$date] += $item['unit'];
             }
-            $totalUnitPerDate[$date] += $item['unit'];
         }
 
         return view('calendar.show', [
             'title' => 'Ketersediaan Detail',
             'description' => 'Halaman untuk mengelola Tanggal Reservasi',
             'product'=> $product,
-            // 'availability' => $availability,
+            'availability' => $availability,
             'totalUnitPerDate' => $totalUnitPerDate,
         ]);
     }
