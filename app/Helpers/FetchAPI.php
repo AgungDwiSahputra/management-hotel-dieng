@@ -52,6 +52,17 @@ if (!function_exists('getAllProducts')) {
         return $response;
     }
 }
+if (!function_exists('getProductsByOwner')) {
+    function getProductsByOwner($owner)
+    {
+        $response = FetchAPI(env('URL_API') . '/api/v1/products');
+        $response = array_filter($response, function ($data) use ($owner) {
+            return isset($data['owner']) && strtolower($data['owner']) == strtolower($owner->email);
+        });
+
+        return $response;
+    }
+}
 
 if (!function_exists('getProductById')) {
     function getProductById($id)

@@ -93,10 +93,23 @@ class PartnerController extends Controller
     {
         $partner = $this->userService->getPartnerById($id);
 
+        $products = getProductsByOwner($partner) ?? array();
+        // filter data array product hanya 'name, unit, harga_weekday, harga_weekend'
+        $products = array_map(function ($product) {
+            return [
+                'id' => $product['id'],
+                'name' => $product['name'],
+                'unit' => $product['unit'],
+                'harga_weekday' => $product['harga_weekday'],
+                'harga_weekend' => $product['harga_weekend'],
+            ];
+        }, $products);
+
         return view('partner.show', [
             'title' => 'Partner Details',
             'description' => 'Halaman untuk mengelola partner',
-            'partner'=> $partner
+            'partner'=> $partner,
+            'products' => $products
         ]);
     }
 
