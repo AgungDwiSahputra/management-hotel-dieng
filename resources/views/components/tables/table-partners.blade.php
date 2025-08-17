@@ -16,6 +16,7 @@
             'label' => 'Ubah',
             'route' => 'partner.edit',
             'method' => null,
+            'class' => 'text-white dark:text-white bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 dark:hover:bg-blue-800'
         ],
     ],
 ])
@@ -82,7 +83,7 @@
                                         </form>
                                     @else
                                         <a href="{{ route($btn['route'], $row['id']) }}"
-                                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-gray-300 bg-blue-500 dark:bg-blue-900 text-theme-sm font-medium text-white dark:text-white hover:bg-blue-600 dark:hover:bg-blue-800 transition duration-300">
+                                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-gray-300 text-theme-sm font-medium transition duration-300 {{ $btn['class'] }}">
                                             <span>{{ $btn['label'] }}</span>
                                         </a>
                                     @endif

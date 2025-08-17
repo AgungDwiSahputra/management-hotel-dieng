@@ -30,14 +30,22 @@
                         :rows="$partners"
                         :btnAction="[
                             [
+                                'label' => 'Detail',
+                                'route' => 'partner.show',
+                                'method' => null,
+                                'class' => 'text-white dark:text-white bg-yellow-500 dark:bg-yellow-900 hover:bg-yellow-600 dark:hover:bg-yellow-800'
+                            ],
+                            [
                                 'label' => 'Ubah',
                                 'route' => 'partner.edit',
                                 'method' => null,
+                                'class' => 'text-white dark:text-white bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 dark:hover:bg-blue-800'
                             ],
                             [
                                 'label' => 'Hapus',
                                 'route' => 'partner.destroy',
                                 'method' => 'delete',
+                                'class' => 'text-white dark:text-white bg-red-500 dark:bg-red-900 hover:bg-red-600 dark:hover:bg-red-800'
                             ],
                         ]"
                     />

@@ -172,14 +172,26 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = FetchAPIDelete(env('URL_API') . '/api/v1/products/' . $id);
+        // Panggil API untuk menghapus produk
+        $deletedProduct = FetchAPIDelete(env('URL_API') . '/api/v1/products/' . $id);
 
-        if (isset($product['error'])) {
-            return response()->json(['error' => $product['error']], 400);
+        // Jika terjadi error saat menghapus produk, tampilkan pesan error
+        if (isset($deletedProduct['error'])) {
+            return response()->json(['error' => $deletedProduct['error']], 400);
         }
 
-        return redirect()->route('product.index')->with([
-            'success' => 'Unit produk berhasil dihapus',
-        ]);
+        // Dapatkan nama rute sebelumnya
+        $previousRouteName = app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
+
+        // Periksa apakah rute sebelumnya berada dalam daftar rute yang diizinkan
+        $allowedPreviousRoutes = ['product.edit', 'product.show', 'product.index'];
+
+        // Jika rute sebelumnya tidak diizinkan, balik ke halaman sebelumnya
+        if (!in_array($previousRouteName, $allowedPreviousRoutes)) {
+            return back()->with(['success' => 'Product unit deleted successfully']);
+        }
+
+        // Jika rute sebelumnya diizinkan, balik ke halaman index
+        return redirect()->route('product.index')->with(['success' => 'Product unit deleted successfully']);
     }
 }
