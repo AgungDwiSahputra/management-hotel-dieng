@@ -190,12 +190,8 @@ class VillaCalendar {
     async renderEventsForDate(date) {
         // menetapkan nilai atribut ke bidang input
         const [year, month, day] = date.split("-");
-        const startDateInput = this.elements.startDateInput;
-        const endDateInput = this.elements.endDateInput;
-        if (startDateInput && endDateInput) {
-            startDateInput.value = `${month}/${day}/${year}`;
-            endDateInput.value = `${month}/${day}/${year}`;
-        }
+        this.elements.startDateInput.value = `${month}/${day}/${year}`;
+        this.elements.endDateInput.value = `${month}/${day}/${year}`;
 
         // mengambil data reservasi berdasarkan tanggal yang dipilih
         const reservations = await this.getReservationByDate(
