@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CollabController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
@@ -30,10 +31,11 @@ Route::get('/', function () {
 Auth::routes();
 // ================================================
 
-Route::middleware(['auth', 'role:admin|developer|partner'])->group(function () {
+Route::middleware(['auth', 'role:admin|developer|partner|collab'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('product', ProductController::class);
     Route::resource('partner', PartnerController::class);
+    Route::resource('collab', CollabController::class);
     Route::resource('reservation', ReservationController::class);
     Route::resource('calendar', CalendarController::class);
     Route::post('calendar/{product}/updateProductUnit', [CalendarController::class, 'updateProductUnit'])->name('calendar.updateProductUnit');

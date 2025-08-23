@@ -34,13 +34,13 @@ class UserService {
     return $user;
   }
 
+  // PARTNER
   public function createPartner($request): User
   {
     $user = $this->create($request);
     $user->assignRole(User::PARTNER);
     return $user;
   }
-
   public function updatePartner($id, $request): bool
   {
     $datas = [
@@ -59,7 +59,6 @@ class UserService {
     }
     return $user->update($datas);
   }
-  
   public function deletePartner($id): bool
   {
     $user = $this->getPartnerById($id);
@@ -67,6 +66,42 @@ class UserService {
     $product = FetchAPIDelete(env('URL_API') . '/api/v1/product/owner/' . $user->email);
     if (!$user) {
         throw new \Exception('Partner not found');
+    }
+    return $user->delete();
+  }
+
+  // COLLAB
+  public function createCollab($request): User
+  {
+    $user = $this->create($request);
+    $user->assignRole(User::COLLAB);
+    return $user;
+  }
+  public function updateCollab($id, $request): bool
+  {
+    $datas = [
+        'name' => $request['name'],
+        'email' => $request['email'],
+        'email_verified_at' => now(),
+    ];
+
+    if (!empty($request['password'])) {
+        $datas['password'] = bcrypt($request['password']);
+    }
+
+    $user = $this->getCollabById($id);
+    if (!$user) {
+        throw new \Exception('Collab not found');
+    }
+    return $user->update($datas);
+  }
+  public function deleteCollab($id): bool
+  {
+    $user = $this->getCollabById($id);
+
+    $product = FetchAPIDelete(env('URL_API') . '/api/v1/product/owner/' . $user->email);
+    if (!$user) {
+        throw new \Exception('Collab not found');
     }
     return $user->delete();
   }
@@ -89,6 +124,8 @@ class UserService {
   {
     return $this->user->role(User::DEVELOPER)->paginate();
   }
+
+  // PARTNER
   public function getPartners()
   {
     return $this->user->role(User::PARTNER)->get();
@@ -98,6 +135,16 @@ class UserService {
     return $this->user->role(User::PARTNER)->find($id);
   }
 
+  // COLLAB
+  public function getCollabs()
+  {
+    return $this->user->role(User::COLLAB)->get();
+  }
+  public function getCollabById($id): User
+  {
+    return $this->user->role(User::COLLAB)->find($id);
+  }
+  
   public function findById($id): User
   {
     return $this->user->find($id);
