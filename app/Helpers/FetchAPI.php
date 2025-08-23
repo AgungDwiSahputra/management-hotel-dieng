@@ -49,6 +49,10 @@ if (!function_exists('getAllProducts')) {
         $response = FetchAPI(env('URL_API') . '/api/v1/products');
         $response = filterByOwner($response, 'owner', GetUser());
 
+        if(auth()->check() && auth()->user()->isCollab()) {
+            $response = filterCollabPermission($response, 'id', getPermissionProducts(auth()->user()));
+        }
+
         return $response;
     }
 }

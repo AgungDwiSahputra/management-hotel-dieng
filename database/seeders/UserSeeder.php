@@ -41,6 +41,13 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
         ];
 
+        $collabUser = [
+            'name' => 'Collab User',
+            'email' => 'collab@app.com',
+            'email_verified_at'=> now(),
+            'password' => bcrypt('password'),
+        ];
+
         $userService = new UserService(new User());
         if(!$userService->getAdmins()->count()){
             $userService->createAdmin($adminUser);
@@ -50,6 +57,9 @@ class UserSeeder extends Seeder
         }
         if(!$userService->getPartners()->count()){
             $userService->createPartner($partnerUser);
+        }
+        if(!$userService->getCollabs()->count()){
+            $userService->createCollab($collabUser);
         }
     }
 }

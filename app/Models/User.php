@@ -17,6 +17,7 @@ class User extends Authenticatable
     const DEVELOPER = 'developer';
     const ADMIN = 'admin';
     const PARTNER = 'partner';
+    const COLLAB = 'collab';
 
     /**
      * The attributes that are mass assignable.
@@ -64,6 +65,10 @@ class User extends Authenticatable
     public function isPartner(): bool
     {
         return $this->hasRole(static::PARTNER);
+    }
+    public function isCollab(): bool
+    {
+        return $this->hasRole(static::COLLAB);
     }
 
 }
