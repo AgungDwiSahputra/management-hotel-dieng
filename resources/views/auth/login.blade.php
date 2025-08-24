@@ -120,10 +120,12 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                         </button>
                                     </div>
 
-                                    <span class="block md:hidden w-full text-center mt-10 text-sm text-gray-600">Copyright &copy; {{ date('Y') }}
-                                        | <a href="http://developerdigital.web.id" target="_blank"
-                                            class="underline text-blue-600 hover:text-blue-800">Dev. Digital</a> - Cv.
-                                        De Kreatif</span>
+                                    <span
+                                        class="block md:hidden w-full text-center mt-10 text-sm text-gray-600">Copyright
+                                        &copy; {{ date('Y') }} | Powered by <a href="http://hostnesia.id"
+                                            target="_blank"
+                                            class="underline text-blue-600 hover:text-blue-800">HostNesia
+                                            Indonesia</a></span>
                                 </div>
                             </form>
                         </div>
