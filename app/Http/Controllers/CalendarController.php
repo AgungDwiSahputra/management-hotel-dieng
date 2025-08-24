@@ -19,7 +19,7 @@ class CalendarController extends Controller
                 return $reservation['produk_id'] == $product['id'];
             }));
 
-            if(GetUser()->isPartner()) {
+            if(GetUser()->isPartner() || GetUser()->isCollab()) {
                 return [
                     'id' => $product['id'],
                     'name' => $product['name'],

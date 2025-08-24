@@ -25,7 +25,7 @@
 
         @if ($showPercent)
             <span
-                class="flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium
+                class="flex items-center gap-1 rounded-full py-0.5 pl-2 pr-2.5 text-sm font-medium flex-shrink-0 min-w-[57px]
                 {{ $percent >= 0 ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500' }}
                 ">
                 @if ($percent >= 0)
@@ -44,7 +44,7 @@
                     </svg>
                 @endif
 
-                {{ $percent }} %
+                {{ round($percent) }}%
             </span>
         @endif
     </div>

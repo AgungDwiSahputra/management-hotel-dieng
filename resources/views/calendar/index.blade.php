@@ -15,7 +15,7 @@
                 </div>
                 <div class="border-t border-gray-100 dark:border-gray-800">
                     <!-- ====== Table Six Start -->
-                    <x-tables.table-products :headers="(GetUser()->isPartner() ? ['ID', 'Nama', 'Unit', 'Total Pesanan', 'Aksi'] : ['ID', 'Nama', 'Unit', 'Harga Weekday', 'Harga Weekend', 'Total Pesanan', 'Aksi'])" :rows="$products" />
+                    <x-tables.table-products :headers="(GetUser()->isPartner() || GetUser()->isCollab() ? ['ID', 'Nama', 'Unit', 'Total Pesanan', 'Aksi'] : ['ID', 'Nama', 'Unit', 'Harga Weekday', 'Harga Weekend', 'Total Pesanan', 'Aksi'])" :rows="$products" />
                     <!-- ====== Table Six End -->
                 </div>
             </div>

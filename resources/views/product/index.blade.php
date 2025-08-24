@@ -26,20 +26,9 @@
                 <div class="border-t border-gray-100 dark:border-gray-800">
                     <!-- ====== Table Six Start -->
                     <x-tables.table-products 
-                        :headers="(GetUser()->isPartner() ? ['ID', 'Nama', 'Unit', 'Aksi'] : ['ID', 'Nama', 'Unit', 'Harga Weekday', 'Harga Weekend', 'Aksi'])" 
+                        :headers="(GetUser()->isPartner() || GetUser()->isCollab() ? ['ID', 'Nama', 'Unit', 'Aksi'] : ['ID', 'Nama', 'Unit', 'Harga Weekday', 'Harga Weekend', 'Aksi'])" 
                         :rows="$products" 
-                        :btnAction="[
-                            [
-                                'label' => 'Edit',
-                                'route' => 'product.edit',
-                                'method' => null,
-                            ],
-                            [
-                                'label' => 'Hapus',
-                                'route' => 'product.destroy',
-                                'method' => 'delete',
-                            ],
-                        ]" 
+                        :btnAction="(GetUser()->isPartner() ? [[ 'label' => 'Hapus', 'route' => 'product.destroy', 'method' => 'delete' ]] : [[ 'label' => 'Edit', 'route' => 'product.edit', 'method' => null ], [ 'label' => 'Hapus', 'route' => 'product.destroy', 'method' => 'delete' ]])" 
                     />
                     <!-- ====== Table Six End -->
                 </div>
