@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CollabController;
 use App\Http\Controllers\DashboardController;
@@ -34,6 +35,7 @@ Auth::routes();
 Route::middleware(['auth', 'role:admin|developer|partner|collab'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('product', ProductController::class);
+    Route::resource('admin', AdminController::class);
     Route::resource('partner', PartnerController::class);
     Route::resource('collab', CollabController::class);
     Route::resource('reservation', ReservationController::class);
