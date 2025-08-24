@@ -115,7 +115,7 @@
                             </li>
                         @endif
                         <!-- Menu Item Product -->
-                        @if (auth()->check() && auth()->user()->isPartner())
+                        @if (auth()->check() && auth()->user()->isPartner() || auth()->user()->isDeveloper())
                             <li class="order-1">
                                 <a href="{{ route('product.index') }}"
                                     class="menu-item group {{ isCurrentRoute('product') ? 'menu-item-active' : 'menu-item-inactive' }}">
