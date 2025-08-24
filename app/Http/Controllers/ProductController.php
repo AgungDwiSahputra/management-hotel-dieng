@@ -15,7 +15,7 @@ class ProductController extends Controller
 
         // filter data array product hanya 'name, unit, harga_weekday, harga_weekend'
         $products = array_map(function ($product) {
-            if(GetUser()->isPartner()) {
+            if(GetUser()->isPartner() || GetUser()->isCollab()) {
                 return [
                     'id' => $product['id'],
                     'name' => $product['name'],

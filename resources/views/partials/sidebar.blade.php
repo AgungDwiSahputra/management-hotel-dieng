@@ -34,10 +34,26 @@
                     </svg>
                 </h3>
 
-                <ul class="flex flex-col gap-4 mb-6">
-                    <!-- Menu Item Dashboard -->
-                    @if (auth()->check() && !auth()->user()->isCollab())
-                        <li>
+                @if (auth()->check() && auth()->user()->isPartner())
+                    <ul class="flex flex-col gap-4 mb-6">
+                        <!-- Menu Item Calendar (Ketersediaan) -->
+                        <li class="order-0">
+                            <a href="{{ route('calendar.index') }}"
+                                class="menu-item group {{ isCurrentRoute('calendar') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg class="{{ isCurrentRoute('calendar') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z"
+                                        fill="" />
+                                </svg>
+                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                    Ketersediaan
+                                </span>
+                            </a>
+                        </li>
+                        <!-- Menu Item Dashboard (Beranda) -->
+                        <li class="order-1">
                             <a href="{{ route('dashboard') }}"
                                 class="menu-item group {{ isCurrentRoute('dashboard') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ isCurrentRoute('dashboard') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
@@ -47,18 +63,13 @@
                                         d="M5.5 3.25C4.25736 3.25 3.25 4.25736 3.25 5.5V8.99998C3.25 10.2426 4.25736 11.25 5.5 11.25H9C10.2426 11.25 11.25 10.2426 11.25 8.99998V5.5C11.25 4.25736 10.2426 3.25 9 3.25H5.5ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H9C9.41421 4.75 9.75 5.08579 9.75 5.5V8.99998C9.75 9.41419 9.41421 9.74998 9 9.74998H5.5C5.08579 9.74998 4.75 9.41419 4.75 8.99998V5.5ZM5.5 12.75C4.25736 12.75 3.25 13.7574 3.25 15V18.5C3.25 19.7426 4.25736 20.75 5.5 20.75H9C10.2426 20.75 11.25 19.7427 11.25 18.5V15C11.25 13.7574 10.2426 12.75 9 12.75H5.5ZM4.75 15C4.75 14.5858 5.08579 14.25 5.5 14.25H9C9.41421 14.25 9.75 14.5858 9.75 15V18.5C9.75 18.9142 9.41421 19.25 9 19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5V15ZM12.75 5.5C12.75 4.25736 13.7574 3.25 15 3.25H18.5C19.7426 3.25 20.75 4.25736 20.75 5.5V8.99998C20.75 10.2426 19.7426 11.25 18.5 11.25H15C13.7574 11.25 12.75 10.2426 12.75 8.99998V5.5ZM15 4.75C14.5858 4.75 14.25 5.08579 14.25 5.5V8.99998C14.25 9.41419 14.5858 9.74998 15 9.74998H18.5C18.9142 9.74998 19.25 9.41419 19.25 8.99998V5.5C19.25 5.08579 18.9142 4.75 18.5 4.75H15ZM15 12.75C13.7574 12.75 12.75 13.7574 12.75 15V18.5C12.75 19.7426 13.7574 20.75 15 20.75H18.5C19.7426 20.75 20.75 19.7427 20.75 18.5V15C20.75 13.7574 19.7426 12.75 18.5 12.75H15ZM14.25 15C14.25 14.5858 14.5858 14.25 15 14.25H18.5C18.9142 14.25 19.25 14.5858 19.25 15V18.5C19.25 18.9142 18.9142 19.25 18.5 19.25H15C14.5858 19.25 14.25 18.9142 14.25 18.5V15Z"
                                         fill="" />
                                 </svg>
-
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     Beranda
                                 </span>
                             </a>
                         </li>
-                    @endif
-                    <!-- Menu Item Dashboard -->
-
-                    <!-- Menu Item Product -->
-                    @if (auth()->check() && auth()->user()->isPartner())
-                        <li>
+                        <!-- Menu Item Product (Produk) -->
+                        <li class="order-2">
                             <a href="{{ route('product.index') }}"
                                 class="menu-item group {{ isCurrentRoute('product') ? 'menu-item-active' : 'menu-item-inactive' }}">
                                 <svg class="{{ isCurrentRoute('product') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
@@ -77,83 +88,119 @@
                                             d="M21,35c7.7,0,14-6.3,14-14S28.7,7,21,7S7,13.3,7,21S13.3,35,21,35z M21,15c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,15,21,15z" />
                                     </g>
                                 </svg>
-
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
                                     Produk
                                 </span>
                             </a>
                         </li>
-                    @endif
-                    <!-- Menu Item Product -->
-
-                    <!-- Menu Item Partner/Collab -->
-                    @if (auth()->check() && auth()->user()->isDeveloper())
-                        <li>
-                            <a href="{{ route('partner.index') }}"
-                                class="menu-item group {{ isCurrentRoute('partner') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ isCurrentRoute('partner') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" stroke-width="3" stroke="#000000" fill="none"><circle cx="22.83" cy="22.57" r="7.51"/><path d="M38,49.94a15.2,15.2,0,0,0-15.21-15.2h0a15.2,15.2,0,0,0-15.2,15.2Z"/><circle cx="44.13" cy="27.22" r="6.05"/><path d="M42.4,49.94h14A12.24,12.24,0,0,0,44.13,37.7h0a12.21,12.21,0,0,0-5.75,1.43"/></svg>
-
-                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                    Partner
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('collab.index') }}"
-                                class="menu-item group {{ isCurrentRoute('collab') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ isCurrentRoute('collab') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" stroke-width="3" stroke="#000000" fill="none"><circle cx="22.83" cy="22.57" r="7.51"/><path d="M38,49.94a15.2,15.2,0,0,0-15.21-15.2h0a15.2,15.2,0,0,0-15.2,15.2Z"/><circle cx="44.13" cy="27.22" r="6.05"/><path d="M42.4,49.94h14A12.24,12.24,0,0,0,44.13,37.7h0a12.21,12.21,0,0,0-5.75,1.43"/></svg>
-
-                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                    Collab
-                                </span>
-                            </a>
-                        </li>
-                    @endif
-                    <!-- Menu Item Partner/Collab -->
-
-                    <!-- Menu Item Calendar -->
-                    <li>
-                        <a href="{{ route('calendar.index') }}"
-                            class="menu-item group {{ isCurrentRoute('calendar') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                            <svg class="{{ isCurrentRoute('calendar') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z"
-                                    fill="" />
-                            </svg>
-
-                            <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                Ketersediaan
-                            </span>
-                        </a>
-                    </li>
-                    <!-- Menu Item Calendar -->
-
-                    {{-- <!-- Menu Item Reservation -->
-                    @if (auth()->check() && (auth()->user()->isDeveloper() || auth()->user()->isPartner()))
-                        <li>
-                            <a href="{{ route('reservation.index') }}"
-                                class="menu-item group {{ isCurrentRoute('reservation') ? 'menu-item-active' : 'menu-item-inactive' }}">
-                                <svg class="{{ isCurrentRoute('reservation') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                    </ul>
+                @else
+                    <ul class="flex flex-col gap-4 mb-6">
+                        <!-- Menu Item Dashboard -->
+                        @if (auth()->check() && !auth()->user()->isCollab())
+                            <li class="order-0">
+                                <a href="{{ route('dashboard') }}"
+                                    class="menu-item group {{ isCurrentRoute('dashboard') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                    <svg class="{{ isCurrentRoute('dashboard') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M5.5 3.25C4.25736 3.25 3.25 4.25736 3.25 5.5V8.99998C3.25 10.2426 4.25736 11.25 5.5 11.25H9C10.2426 11.25 11.25 10.2426 11.25 8.99998V5.5C11.25 4.25736 10.2426 3.25 9 3.25H5.5ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H9C9.41421 4.75 9.75 5.08579 9.75 5.5V8.99998C9.75 9.41419 9.41421 9.74998 9 9.74998H5.5C5.08579 9.74998 4.75 9.41419 4.75 8.99998V5.5ZM5.5 12.75C4.25736 12.75 3.25 13.7574 3.25 15V18.5C3.25 19.7426 4.25736 20.75 5.5 20.75H9C10.2426 20.75 11.25 19.7427 11.25 18.5V15C11.25 13.7574 10.2426 12.75 9 12.75H5.5ZM4.75 15C4.75 14.5858 5.08579 14.25 5.5 14.25H9C9.41421 14.25 9.75 14.5858 9.75 15V18.5C9.75 18.9142 9.41421 19.25 9 19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5V15ZM12.75 5.5C12.75 4.25736 13.7574 3.25 15 3.25H18.5C19.7426 3.25 20.75 4.25736 20.75 5.5V8.99998C20.75 10.2426 19.7426 11.25 18.5 11.25H15C13.7574 11.25 12.75 10.2426 12.75 8.99998V5.5ZM15 4.75C14.5858 4.75 14.25 5.08579 14.25 5.5V8.99998C14.25 9.41419 14.5858 9.74998 15 9.74998H18.5C18.9142 9.74998 19.25 9.41419 19.25 8.99998V5.5C19.25 5.08579 18.9142 4.75 18.5 4.75H15ZM15 12.75C13.7574 12.75 12.75 13.7574 12.75 15V18.5C12.75 19.7426 13.7574 20.75 15 20.75H18.5C19.7426 20.75 20.75 19.7427 20.75 18.5V15C20.75 13.7574 19.7426 12.75 18.5 12.75H15ZM14.25 15C14.25 14.5858 14.5858 14.25 15 14.25H18.5C18.9142 14.25 19.25 14.5858 19.25 15V18.5C19.25 18.9142 18.9142 19.25 18.5 19.25H15C14.5858 19.25 14.25 18.9142 14.25 18.5V15Z"
+                                            fill="" />
+                                    </svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                        Beranda
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
+                        <!-- Menu Item Product -->
+                        @if (auth()->check() && auth()->user()->isPartner())
+                            <li class="order-1">
+                                <a href="{{ route('product.index') }}"
+                                    class="menu-item group {{ isCurrentRoute('product') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                    <svg class="{{ isCurrentRoute('product') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        fill="#000000" width="24" height="24" viewBox="0 0 128 128" id="Layer_1"
+                                        version="1.1" xml:space="preserve">
+                                        <g>
+                                            <rect height="8" width="64" x="53" y="17" />
+                                            <rect height="8" width="64" x="53" y="60" />
+                                            <rect height="8" width="64" x="53" y="103" />
+                                            <path
+                                                d="M21,121c7.7,0,14-6.3,14-14s-6.3-14-14-14S7,99.3,7,107S13.3,121,21,121z M21,101c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,101,21,101z" />
+                                            <path
+                                                d="M21,78c7.7,0,14-6.3,14-14s-6.3-14-14-14S7,56.3,7,64S13.3,78,21,78z M21,58c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,58,21,58z" />
+                                            <path
+                                                d="M21,35c7.7,0,14-6.3,14-14S28.7,7,21,7S7,13.3,7,21S13.3,35,21,35z M21,15c3.3,0,6,2.7,6,6s-2.7,6-6,6s-6-2.7-6-6   S17.7,15,21,15z" />
+                                        </g>
+                                    </svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                        Produk
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
+                        <!-- Menu Item Partner/Collab -->
+                        @if (auth()->check() && auth()->user()->isDeveloper())
+                            <li class="order-2">
+                                <a href="{{ route('partner.index') }}"
+                                    class="menu-item group {{ isCurrentRoute('partner') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                    <svg class="{{ isCurrentRoute('partner') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" stroke-width="3" stroke="#000000" fill="none"><circle cx="22.83" cy="22.57" r="7.51"/><path d="M38,49.94a15.2,15.2,0,0,0-15.21-15.2h0a15.2,15.2,0,0,0-15.2,15.2Z"/><circle cx="44.13" cy="27.22" r="6.05"/><path d="M42.4,49.94h14A12.24,12.24,0,0,0,44.13,37.7h0a12.21,12.21,0,0,0-5.75,1.43"/></svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                        Partner
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="order-3">
+                                <a href="{{ route('collab.index') }}"
+                                    class="menu-item group {{ isCurrentRoute('collab') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                    <svg class="{{ isCurrentRoute('collab') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" stroke-width="3" stroke="#000000" fill="none"><circle cx="22.83" cy="22.57" r="7.51"/><path d="M38,49.94a15.2,15.2,0,0,0-15.21-15.2h0a15.2,15.2,0,0,0-15.2,15.2Z"/><circle cx="44.13" cy="27.22" r="6.05"/><path d="M42.4,49.94h14A12.24,12.24,0,0,0,44.13,37.7h0a12.21,12.21,0,0,0-5.75,1.43"/></svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                        Collab
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
+                        <!-- Menu Item Calendar -->
+                        <li class="order-4">
+                            <a href="{{ route('calendar.index') }}"
+                                class="menu-item group {{ isCurrentRoute('calendar') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                <svg class="{{ isCurrentRoute('calendar') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M5.5 3.25C4.25736 3.25 3.25 4.25736 3.25 5.5V18.5C3.25 19.7426 4.25736 20.75 5.5 20.75H18.5001C19.7427 20.75 20.7501 19.7426 20.7501 18.5V5.5C20.7501 4.25736 19.7427 3.25 18.5001 3.25H5.5ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H18.5001C18.9143 4.75 19.2501 5.08579 19.2501 5.5V18.5C19.2501 18.9142 18.9143 19.25 18.5001 19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5V5.5ZM6.25005 9.7143C6.25005 9.30008 6.58583 8.9643 7.00005 8.9643L17 8.96429C17.4143 8.96429 17.75 9.30008 17.75 9.71429C17.75 10.1285 17.4143 10.4643 17 10.4643L7.00005 10.4643C6.58583 10.4643 6.25005 10.1285 6.25005 9.7143ZM6.25005 14.2857C6.25005 13.8715 6.58583 13.5357 7.00005 13.5357H17C17.4143 13.5357 17.75 13.8715 17.75 14.2857C17.75 14.6999 17.4143 15.0357 17 15.0357H7.00005C6.58583 15.0357 6.25005 14.6999 6.25005 14.2857Z"
+                                        d="M8 2C8.41421 2 8.75 2.33579 8.75 2.75V3.75H15.25V2.75C15.25 2.33579 15.5858 2 16 2C16.4142 2 16.75 2.33579 16.75 2.75V3.75H18.5C19.7426 3.75 20.75 4.75736 20.75 6V9V19C20.75 20.2426 19.7426 21.25 18.5 21.25H5.5C4.25736 21.25 3.25 20.2426 3.25 19V9V6C3.25 4.75736 4.25736 3.75 5.5 3.75H7.25V2.75C7.25 2.33579 7.58579 2 8 2ZM8 5.25H5.5C5.08579 5.25 4.75 5.58579 4.75 6V8.25H19.25V6C19.25 5.58579 18.9142 5.25 18.5 5.25H16H8ZM19.25 9.75H4.75V19C4.75 19.4142 5.08579 19.75 5.5 19.75H18.5C18.9142 19.75 19.25 19.4142 19.25 19V9.75Z"
                                         fill="" />
                                 </svg>
-
                                 <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                    Pemesanan
+                                    Ketersediaan
                                 </span>
                             </a>
                         </li>
-                    @endif
-                    <!-- Menu Item Reservation --> --}}
-
-                </ul>
+                        {{-- <!-- Menu Item Reservation -->
+                        @if (auth()->check() && (auth()->user()->isDeveloper() || auth()->user()->isPartner()))
+                            <li>
+                                <a href="{{ route('reservation.index') }}"
+                                    class="menu-item group {{ isCurrentRoute('reservation') ? 'menu-item-active' : 'menu-item-inactive' }}">
+                                    <svg class="{{ isCurrentRoute('reservation') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M5.5 3.25C4.25736 3.25 3.25 4.25736 3.25 5.5V18.5C3.25 19.7426 4.25736 20.75 5.5 20.75H18.5001C19.7427 20.75 20.7501 19.7426 20.7501 18.5V5.5C20.7501 4.25736 19.7427 3.25 18.5001 3.25H5.5ZM4.75 5.5C4.75 5.08579 5.08579 4.75 5.5 4.75H18.5001C18.9143 4.75 19.2501 5.08579 19.2501 5.5V18.5C19.2501 18.9142 18.9143 19.25 18.5001 19.25H5.5C5.08579 19.25 4.75 18.9142 4.75 18.5V5.5ZM6.25005 9.7143C6.25005 9.30008 6.58583 8.9643 7.00005 8.9643L17 8.96429C17.4143 8.96429 17.75 9.30008 17.75 9.71429C17.75 10.1285 17.4143 10.4643 17 10.4643L7.00005 10.4643C6.58583 10.4643 6.25005 10.1285 6.25005 9.7143ZM6.25005 14.2857C6.25005 13.8715 6.58583 13.5357 7.00005 13.5357H17C17.4143 13.5357 17.75 13.8715 17.75 14.2857C17.75 14.6999 17.4143 15.0357 17 15.0357H7.00005C6.58583 15.0357 6.25005 14.6999 6.25005 14.2857Z"
+                                            fill="" />
+                                    </svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                        Pemesanan
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
+                        <!-- Menu Item Reservation --> --}}
+                    </ul>
+                @endif
             </div>
 
         </nav>
