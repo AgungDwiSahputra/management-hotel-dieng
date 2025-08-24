@@ -41,7 +41,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if($user->isCollab()){
+        if($user->isCollab() || $user->isPartner()){
             return redirect()->route('calendar.index');
         }else{
             return redirect()->route('dashboard');

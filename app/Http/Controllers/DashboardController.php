@@ -13,8 +13,8 @@
             $products = getAllProducts() ?? [];
 
             return view('index', [
-                'title' => 'Dashboard Admin',
-                'description' => 'Halaman utama untuk admin',
+                'title' => 'Dashboard',
+                'description' => 'Halaman utama',
                 'reservations' => $reservations,
                 'countReservations' => count($reservations),
                 'countTotalReservation' => $this->countTotalReservation(),
