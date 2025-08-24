@@ -218,6 +218,6 @@
     </div>
     <span :class="sidebarToggle ? 'lg:hidden' : ''"
         class="block absolute bottom-5 text-center text-xs text-gray-600">Copyright &copy; {{ date('Y') }} | Powered by <a
-            href="http://developerdigital.web.id" target="_blank"
+            href="http://hostnesia.id" target="_blank"
             class="underline text-blue-600 hover:text-blue-800">HostNesia Indonesia</a></span>
 </aside>
