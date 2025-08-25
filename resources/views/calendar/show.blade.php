@@ -3,11 +3,19 @@
 @section('content')
     <div class="p-3 mx-auto max-w-(--breakpoint-2xl) md:p-6">
         <!-- Breadcrumb Start -->
-        <x-breadcrumb.type-1 :breadcrumbs="[
+        <x-breadcrumb.type-1 :breadcrumbs="!auth()->user()->isCollab()
+            ? [
+                ['label' => 'Beranda', 'url' => route('dashboard')],
+                ['label' => 'Produk', 'url' => route('calendar.index')],
+                ['label' => 'Ketersediaan', 'url' => null],
+            ]
+            : [['label' => 'Produk', 'url' => route('calendar.index')], ['label' => 'Ketersediaan', 'url' => null]]" />
+
+        {{-- <x-breadcrumb.type-1 :breadcrumbs="[
             ['label' => 'Beranda', 'url' => route('dashboard')],
             ['label' => 'Produk', 'url' => route('calendar.index')],
             ['label' => 'Ketersediaan', 'url' => null],
-        ]" />
+        ]" /> --}}
         <!-- Breadcrumb End -->
 
         <div class="space-y-5 sm:space-y-6">
@@ -28,8 +36,8 @@
                     <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] sm:col-span-1 max-w-4xl mx-auto"
                         data-api-key="{{ env('SANCTUM_TOKEN_PREFIX') }}" data-product-id="{{ $product['id'] }}"
                         data-owner="{{ auth()->check() ? GetUser()->email : '' }}"
-                        data-isPartner="{{ GetUser()->isPartner() }}" data-isDeveloper="{{ GetUser()->isDeveloper() }}" data-isCollab="{{ GetUser()->isCollab() }}"
-                        data-isAdmin="{{ GetUser()->isAdmin() }}">
+                        data-isPartner="{{ GetUser()->isPartner() }}" data-isDeveloper="{{ GetUser()->isDeveloper() }}"
+                        data-isCollab="{{ GetUser()->isCollab() }}" data-isAdmin="{{ GetUser()->isAdmin() }}">
                         <div class="flatpickr"></div>
 
                         <div class="flex items-center justify-start px-4 py-2 pb-4 gap-4">
@@ -42,7 +50,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] {{ (auth()->check() && auth()->user()->isCollab()) ? 'hidden' : '' }}">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] {{ auth()->check() && auth()->user()->isCollab() ? 'hidden' : '' }}">
                     <div class="border-t border-gray-100 dark:border-gray-800">
 
                         <div
@@ -69,8 +78,7 @@
                                 <span class="block text-gray-500 text-sm dark:text-gray-400">Reservation Manual</span>
                                 <div class="mt-4">
                                     <div>
-                                        <label
-                                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Jumlah Unit Tersedia
                                         </label>
                                         <div class="relative">
@@ -84,8 +92,7 @@
 
                                 <div class="mt-6">
                                     <div>
-                                        <label
-                                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Nama Pemesan
                                         </label>
                                         <div class="relative">
@@ -98,14 +105,14 @@
 
                                 <div class="mt-6">
                                     <div>
-                                        <label
-                                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Masukkan Tanggal
                                         </label>
                                         <div class="relative">
                                             <div id="date-range-picker" date-rangepicker class="flex items-center">
                                                 <div class="relative">
-                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                    <div
+                                                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                             fill="currentColor" viewBox="0 0 20 20">
@@ -120,7 +127,8 @@
                                                 </div>
                                                 <span class="mx-4 text-gray-500">to</span>
                                                 <div class="relative">
-                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                    <div
+                                                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                             fill="currentColor" viewBox="0 0 20 20">
@@ -140,8 +148,7 @@
 
                                 <div class="mt-6">
                                     <div>
-                                        <label
-                                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Jumlah Unit
                                         </label>
                                         <div class="relative">
@@ -149,9 +156,9 @@
                                                 <button type="button" id="decrement-button"
                                                     data-input-counter-decrement="unit-count"
                                                     class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white"
-                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none" viewBox="0 0 18 2">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 18 2">
                                                         <path stroke="currentColor" stroke-linecap="round"
                                                             stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                     </svg>
@@ -176,12 +183,11 @@
                                                 <button type="button" id="increment-button"
                                                     data-input-counter-increment="unit-count"
                                                     class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white"
-                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none" viewBox="0 0 18 18">
+                                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 18 18">
                                                         <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M9 1v16M1 9h16" />
+                                                            stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
                                                     </svg>
                                                 </button>
                                             </div>
