@@ -161,3 +161,10 @@ if (!function_exists('rejectReservation')) {
         return FetchAPIPost(env('URL_API') . '/api/v1/reservations/' . $id . '/reject', $data);
     }
 }
+
+if (!function_exists('deleteReservation')) {
+    function deleteReservation($id, $data = [])
+    {
+        return FetchAPIDelete(env('URL_API') . '/api/v1/reservations/' . $id . '/delete');
+    }
+}

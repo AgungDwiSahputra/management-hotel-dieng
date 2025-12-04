@@ -26,15 +26,41 @@ A Laravel-based web application for hotel management, utilizing modern PHP frame
 **Package Manager**: Composer, npm
 
 ## Dependencies
-**Main Dependencies**:
+**Main Dependencies** (PHP):
 - laravel/framework: ^12.0
 - laravel/tinker: ^2.10.1
 - laravel/ui: ^4.6
 - spatie/laravel-permission: ^6.20
 
-**Development Dependencies**:
+**Development Dependencies** (PHP):
 - barryvdh/laravel-debugbar: ^3.16
 - fakerphp/faker: ^1.23
+- laravel/pail: ^1.2.2
+- laravel/pint: ^1.13
+- laravel/sail: ^1.41
+- mockery/mockery: ^1.6
+- nunomaduro/collision: ^8.6
+- phpunit/phpunit: ^11.5.3
+
+**Frontend Dependencies** (production):
+- @alpinejs/persist: ^3.14.1
+- @fullcalendar/core: ^6.1.15
+- @fullcalendar/daygrid: ^6.1.15
+- @fullcalendar/interaction: ^6.1.15
+- @fullcalendar/list: ^6.1.15
+- @fullcalendar/timegrid: ^6.1.15
+- alpinejs: ^3.14.1
+- apexcharts: ^3.51.0
+- chart.js: ^4.4.6
+- datatables.net-dt: ^2.3.2
+- dropzone: ^6.0.0-beta.2
+- flatpickr: ^4.6.13
+- flowbite: ^3.1.2
+- fullcalendar: ^6.1.15
+- jsvectormap: ^1.6.0
+- simple-datatables: ^10.0.0
+- sweetalert2: ^11.6.13
+- swiper: ^11.1.14
 
 **Frontend Dependencies** (dev):
 - @popperjs/core: ^2.11.6
@@ -53,6 +79,13 @@ composer install
 npm install
 npm run build
 ```
+
+## Running the Application
+For development with hot reload and queue processing:
+```bash
+composer run dev
+```
+This command runs the Laravel server, queue listener, and Vite dev server concurrently.
 
 ## Main Files & Resources
 **Entry Point**: public/index.php

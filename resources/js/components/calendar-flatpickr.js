@@ -200,7 +200,7 @@ class VillaCalendar {
         );
 
         // menambahkan tombol Approve All dan Reject All jika ada data reservasi
-        if (!this.isAdmin && !this.isCollab) {
+        if (!this.isAdmin) {
             if (reservations.length > 0) {
                 const buttonsContainer =
                     document.getElementById("helper-all-approve");
@@ -258,7 +258,7 @@ class VillaCalendar {
         const headerRow = document.createElement("tr");
         headerRow.className =
             "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400";
-        const headers = !this.isAdmin && !this.isCollab
+        const headers = !this.isAdmin
             ? [
                   "No",
                   "Nama Pemesan",
@@ -324,20 +324,40 @@ class VillaCalendar {
                     </span>
                 </td>
                 ${
-                    !this.isAdmin && !this.isCollab
+                    !this.isAdmin
                         ? `
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
-                        <button
-                            onclick="showConfirmationSwal('Menyetujui Pemesanan ?', 'Anda yakin ingin menyetujui pemesanan ini ?', 'warning', () => approveReservation('${res.id}'))"
-                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
-                            <span>Approve</span>
-                        </button>
-                        <button
-                            onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('${res.id}'))"
-                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
-                            <span>Reject</span>
-                        </button>
+                        ${
+                            res.status === "REJECTED"
+                                ? `
+                                <button
+                                    onclick="showConfirmationSwal('Menyetujui Pemesanan ?', 'Anda yakin ingin menyetujui pemesanan ini ?', 'warning', () => approveReservation('${res.id}'))"
+                                    class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
+                                    <span>Approve</span>
+                                </button>
+                                ${
+                                    this.isDeveloper
+                                        ? `<button
+                                            onclick="showConfirmationSwal('Menghapus Pemesanan ?', 'Anda yakin ingin menghapus pemesanan ini ?', 'warning', () => deleteReservation('${res.id}'))"
+                                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
+                                            <span>Hapus</span>
+                                        </button>`
+                                        : ""
+                                }
+                                `
+                                : `
+                                <button
+                                    onclick="showConfirmationSwal('Menyetujui Pemesanan ?', 'Anda yakin ingin menyetujui pemesanan ini ?', 'warning', () => approveReservation('${res.id}'))"
+                                    class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
+                                    <span>Approve</span>
+                                </button>
+                                <button
+                                    onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('${res.id}'))"
+                                    class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
+                                    <span>Reject</span>
+                                </button>`
+                        }
                     </div>
                 </td>
                 `

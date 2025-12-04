@@ -336,5 +336,29 @@
                     console.error('Error:', error.message);
                 });
         }
+
+        function deleteReservation(id) {
+            fetch(`https://villahoteldieng.com/api/v1/reservations/${id}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer {{ env('SANCTUM_TOKEN_PREFIX', '') }}', // Ganti {API_KEY} dengan kunci API Anda
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccessSwal('Berhasil', data.message);
+                    console.log('Success:', data.message);
+                })
+                .catch(error => {
+                    showSuccessSwal('Gagal', error.message);
+                    console.error('Error:', error.message);
+                });
+        }
     </script>
 @endpush

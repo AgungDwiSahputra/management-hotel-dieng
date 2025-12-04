@@ -105,6 +105,26 @@ Developer ≈ Admin > Partner > Collab (dengan filter)
 - **Partner**: Akses penuh dengan filter ownership
 - **Collab**: Akses terbatas berdasarkan permission per produk
 
+## Approval dan Rejection Reservations
+
+Fungsi approve dan reject pemesanan memiliki pembatasan role yang berbeda tergantung pada konteks halaman:
+
+### Halaman Reservation (`/reservation`)
+- **Semua role** (Developer, Admin, Partner, Collab) dapat melakukan approve dan reject pemesanan
+- Tombol Approve/Reject ditampilkan tanpa pembatasan role di `resources/views/components/tables/table-detail-reservation.blade.php`
+- Akses melalui middleware `role:admin|developer|partner|collab` di `routes/web.php`
+
+### Halaman Calendar (`/calendar`)
+- **Developer, Partner, dan Collab** yang dapat melakukan approve dan reject pemesanan
+- Admin tidak memiliki akses untuk approve/reject di halaman calendar
+- Kondisi pembatasan: `!this.isAdmin` di `resources/js/components/calendar-flatpickr.js`
+- Termasuk tombol Approve All/Reject All dan tombol per item
+- **Developer** memiliki akses tambahan untuk menghapus pemesanan yang sudah rejected (tombol Delete muncul jika status REJECTED)
+
+### Implementasi Kode
+- API calls menggunakan `acceptReservation()`, `rejectReservation()`, `acceptAllReservations()` di `app/Helpers/FetchAPI.php`
+- Filter status menggunakan `filterReservationNotRejected()` di `app/Helpers/Reservation.php`
+
 ## File Terkait
 
 - `app/Models/User.php`: Definisi model dan method role checking
@@ -112,8 +132,10 @@ Developer ≈ Admin > Partner > Collab (dengan filter)
 - `config/permission.php`: Konfigurasi Spatie Permission
 - `routes/web.php`: Route dengan middleware role
 - `routes/admin.php`: Route admin khusus
+- `routes/api.php`: Route API termasuk endpoint untuk mendapatkan users per produk
 - `database/seeders/RoleSeeder.php`: Seeder untuk membuat role
 - `app/Models/CollabPermission.php`: Model untuk permission collab per produk
+- `app/Http/Controllers/Api/ProductUserController.php`: Controller API untuk mendapatkan users yang terkait dengan produk tertentu (owner, collab, admin/developer)
 
 ## Catatan Teknis
 
