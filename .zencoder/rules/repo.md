@@ -10,6 +10,7 @@ A Laravel-based web application for hotel management, utilizing modern PHP frame
 
 ## Structure
 - **app/**: Core application logic including Models, Controllers, Services, and Providers
+  - **app/Services/**: Business logic services including CollabService and UserService for user and collaboration management
 - **bootstrap/**: Application bootstrap files and cache
 - **config/**: Configuration files for various Laravel components (app, database, mail, etc.)
 - **database/**: Migrations, seeders, and factories for database management
@@ -91,7 +92,8 @@ This command runs the Laravel server, queue listener, and Vite dev server concur
 **Entry Point**: public/index.php
 **Artisan CLI**: artisan
 **Configuration**: config/*.php
-**Routes**: routes/*.php
+**Routes**: routes/*.php (web, admin, api)
+**API Endpoints**: routes/api.php including product user management
 **Views**: resources/views/
 **Assets**: resources/css/, resources/js/, resources/sass/
 
