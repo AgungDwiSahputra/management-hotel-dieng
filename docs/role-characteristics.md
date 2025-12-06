@@ -85,6 +85,9 @@ Role untuk kolaborator atau staf dengan akses terbatas berdasarkan permission sp
   - `getPermissionProducts()`: Mendapatkan array product_id yang diizinkan
   - `filterCollabPermission()`: Filter data berdasarkan permission collab
 - Hanya dapat mengakses produk tertentu yang diberikan permission oleh admin atau partner
+- **Pembatasan Approval/Rejection**:
+  - Di halaman Reservation: Hanya dapat approve (tidak bisa reject)
+  - Di halaman Calendar: Hanya dapat approve all (tidak bisa reject all atau approve/reject per item)
 
 ### Implementasi Kode
 - Didefinisikan sebagai konstanta `COLLAB` di `app/Models/User.php`
@@ -110,15 +113,18 @@ Developer ≈ Admin > Partner > Collab (dengan filter)
 Fungsi approve dan reject pemesanan memiliki pembatasan role yang berbeda tergantung pada konteks halaman:
 
 ### Halaman Reservation (`/reservation`)
-- **Semua role** (Developer, Admin, Partner, Collab) dapat melakukan approve dan reject pemesanan
-- Tombol Approve/Reject ditampilkan tanpa pembatasan role di `resources/views/components/tables/table-detail-reservation.blade.php`
+- **Developer, Admin, Partner** dapat melakukan approve dan reject pemesanan
+- **Collab** hanya dapat melakukan approve pemesanan (tombol reject disembunyikan via `!auth()->user()->isCollab()`)
+- Tombol Approve ditampilkan untuk semua role, Reject hanya untuk non-Collab di `resources/views/components/tables/table-detail-reservation.blade.php`
 - Akses melalui middleware `role:admin|developer|partner|collab` di `routes/web.php`
 
 ### Halaman Calendar (`/calendar`)
-- **Developer, Partner, dan Collab** yang dapat melakukan approve dan reject pemesanan
+- **Developer dan Partner** dapat melakukan approve dan reject pemesanan (tombol per item dan bulk)
+- **Collab** hanya dapat melakukan approve all pemesanan (tidak bisa reject all atau approve/reject per item)
 - Admin tidak memiliki akses untuk approve/reject di halaman calendar
-- Kondisi pembatasan: `!this.isAdmin` di `resources/js/components/calendar-flatpickr.js`
-- Termasuk tombol Approve All/Reject All dan tombol per item
+- Kondisi pembatasan:
+  - Bulk actions: `!this.isAdmin` (untuk approve all), `!this.isAdmin && !this.isCollab` (untuk reject all)
+  - Per item actions: `!this.isAdmin && !this.isCollab` di `resources/js/components/calendar-flatpickr.js`
 - **Developer** memiliki akses tambahan untuk menghapus pemesanan yang sudah rejected (tombol Delete muncul jika status REJECTED)
 
 ### Implementasi Kode
@@ -129,6 +135,8 @@ Fungsi approve dan reject pemesanan memiliki pembatasan role yang berbeda tergan
 
 - `app/Models/User.php`: Definisi model dan method role checking
 - `app/Helpers/Users.php`: Helper functions untuk filtering berdasarkan role
+- `app/Services/UserService.php`: Service untuk manajemen user operations (create, update, delete) per role
+- `app/Services/CollabService.php`: Service untuk manajemen collab permissions
 - `config/permission.php`: Konfigurasi Spatie Permission
 - `routes/web.php`: Route dengan middleware role
 - `routes/admin.php`: Route admin khusus
