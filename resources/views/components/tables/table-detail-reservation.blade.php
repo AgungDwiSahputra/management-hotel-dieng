@@ -84,11 +84,13 @@
                                     class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
                                     <span>Approve</span>
                                 </button>
+                                @if(!auth()->user()->isCollab())
                                 <button
                                     onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('{{ $row['id'] }}'))"
                                     class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
                                     <span>Reject</span>
                                 </button>
+                                @endif
                             </div>
                         </td>
                     </tr>

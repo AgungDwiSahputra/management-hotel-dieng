@@ -219,18 +219,20 @@ class VillaCalendar {
                     );
                 buttonsContainer.appendChild(approveAllButton);
 
-                const rejectAllButton = document.createElement("button");
-                rejectAllButton.className =
-                    "flex items-center gap-1 ms-auto rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm";
-                rejectAllButton.innerHTML = "<span>Reject All</span>";
-                rejectAllButton.onclick = () =>
-                    showConfirmationSwal(
-                        "Menolak Semua Pemesanan ?",
-                        "Anda yakin ingin menolak semua pemesanan ini ?",
-                        "warning",
-                        () => rejectAllReservation(this.produkId, date)
-                    );
-                buttonsContainer.appendChild(rejectAllButton);
+                if (!this.isCollab) {
+                    const rejectAllButton = document.createElement("button");
+                    rejectAllButton.className =
+                        "flex items-center gap-1 ms-auto rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm";
+                    rejectAllButton.innerHTML = "<span>Reject All</span>";
+                    rejectAllButton.onclick = () =>
+                        showConfirmationSwal(
+                            "Menolak Semua Pemesanan ?",
+                            "Anda yakin ingin menolak semua pemesanan ini ?",
+                            "warning",
+                            () => rejectAllReservation(this.produkId, date)
+                        );
+                    buttonsContainer.appendChild(rejectAllButton);
+                }
             } else {
                 const buttonsContainer =
                     document.getElementById("helper-all-approve");
@@ -352,11 +354,15 @@ class VillaCalendar {
                                     class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-green-500 bg-green-500 dark:bg-green-700 text-theme-sm font-medium text-white hover:bg-green-600 dark:hover:bg-green-800 transition duration-300 shadow-sm">
                                     <span>Approve</span>
                                 </button>
-                                <button
-                                    onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('${res.id}'))"
-                                    class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
-                                    <span>Reject</span>
-                                </button>`
+                                ${
+                                    !this.isCollab
+                                        ? `<button
+                                            onclick="showConfirmationSwal('Menolak Pemesanan ?', 'Anda yakin ingin menolak pemesanan ini ?', 'warning', () => rejectReservation('${res.id}'))"
+                                            class="flex items-center gap-1 rounded-full px-3 py-1.5 border border-red-500 bg-red-500 dark:bg-red-700 text-theme-sm font-medium text-white hover:bg-red-600 dark:hover:bg-red-800 transition duration-300 shadow-sm">
+                                            <span>Reject</span>
+                                        </button>`
+                                        : ""
+                                }`
                         }
                     </div>
                 </td>
