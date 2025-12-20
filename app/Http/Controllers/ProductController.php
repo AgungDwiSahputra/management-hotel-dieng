@@ -11,23 +11,26 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = getAllProducts();
+        $products = getAllProducts() ?? [];
 
         // filter data array product hanya 'name, unit, harga_weekday, harga_weekend'
         $products = array_map(function ($product) {
-            if(GetUser()->isPartner() || GetUser()->isCollab()) {
+            if (!$product) {
+                return [];
+            }
+            if (GetUser()->isPartner() || GetUser()->isCollab()) {
                 return [
-                    'id' => $product['id'],
-                    'name' => $product['name'],
-                    'unit' => $product['unit'],
+                    'id' => $product['id'] ?? null,
+                    'name' => $product['name'] ?? null,
+                    'unit' => $product['unit'] ?? null,
                 ];
-            }else {
+            } else {
                 return [
-                    'id' => $product['id'],
-                    'name' => $product['name'],
-                    'unit' => $product['unit'],
-                    'harga_weekday' => $product['harga_weekday'],
-                    'harga_weekend' => $product['harga_weekend'],
+                    'id' => $product['id'] ?? null,
+                    'name' => $product['name'] ?? null,
+                    'unit' => $product['unit'] ?? null,
+                    'harga_weekday' => $product['harga_weekday'] ?? null,
+                    'harga_weekend' => $product['harga_weekend'] ?? null,
                 ];
             }
         }, $products);
