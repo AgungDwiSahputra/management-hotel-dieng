@@ -46,7 +46,7 @@ if (! function_exists('FetchAPIMethod')) {
 if (!function_exists('getAllProducts')) {
     function getAllProducts()
     {
-        $response = FetchAPI(env('URL_API') . '/api/v1/products');
+        $response = FetchAPI(env('URL_API') . '/api/v1/productsss');
         $response = filterByOwner($response, 'owner', GetUser());
 
         if(auth()->check() && auth()->user()->isCollab()) {
